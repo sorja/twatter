@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Twatter inc.</title>
+  </head>
+  <body>
+    {% if session['username'] %}
+      <h1>Hello {{ username }}!</h1>
+      <p>
+        Your latest tweets:
+      </p>
+      <ul>
+        <li>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+        </li>
+        <li>
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+        </li>
+        <li>
+          ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+        </li>
+        <li>
+          liquip ex ea commodo consequat. Duis aute irure dolor in
+        </li>
+        <li>
+          eprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+        </li>
+        <li>
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt
+        </li>
+        <li>
+          in culpa qui officia deserunt mollit anim id est laborum.
+        </li>
+      </ul>
+    {% else %}
+      <h1>Hello, World!</h1>
+    {% endif %}
+    <a href="/logout">lgoout</a>
+
+  </body>
+</html>
