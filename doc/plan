@@ -1,0 +1,24 @@
+Use PBKDF2 for passwords
+
+tweet
+  - user id
+  - id
+  - parent id
+  - text
+  - img/s
+  - timestamp
+  - favorited_count
+
+ user
+  - name
+  - password
+  - id
+  - email #null
+
+user_tweet_favorite:
+    - tweet id
+    - user id
+
+followers:
+    - follower_user_id
+    - followed_user_id
