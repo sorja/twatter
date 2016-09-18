@@ -1,0 +1,22 @@
+.nav_right > a.letter_spacing{
+  letter-spacing:1rem;
+  color:darkgray;
+}
+
+.welcome_screen p {
+  padding-left: 10px;
+  border-left:1px solid rgba(96, 108, 118, 0.5);
+}
+
+.logout_link {
+  margin-left:15px;
+}
+
+body > div.t-wrap > div {
+  background-color: #9b4dca !important;
+  color:#fff;
+}
+
+textarea {
+  resize: none;
+}
