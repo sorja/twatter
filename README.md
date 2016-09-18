@@ -7,4 +7,4 @@ Cheap knock off of Twitter which is probably created around whining (valitus)
 
 ---
 
-[Documentation](doc/Documentation)  
+[Documentation](doc/Documentation.pdf)  
