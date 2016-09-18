@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Twatter inc.</title>
+    <!-- Temporary toaster -->
+    <script src="http://catdad.github.io/tiny.cdn/lib/toast/1.0.0/toast.min.js"></script>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/fav.png') }}">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/milligram-1.1.0/dist/milligram.min.css') }}">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
+  </head>
+  <body>
+    <div class="row">
+      <div class="column">
+        <h1>Twatter.</h1>
+      </div>
+      <div class="column column-25 column-offset-50 nav_right">
+        {% if current_user.is_authenticated %}
+              Hi <a class="profile_link"href="{{url_for('profile')}}">{{ current_user.full_name }}</a>!
+              <small class="logout_link"><a href="{{url_for('logout')}}">logout</a></small>
+        {% else %}
+          <a class="letter_spacing" href="#">github</a>
+        {% endif %}
+      </div>
+    </div>
+    <div class="container">
+      {% block body %}{% endblock %}
+      <div class="row">
+        <div class="column"><br />
+          &copy; sorja
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
