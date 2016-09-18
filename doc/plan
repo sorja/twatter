@@ -1,4 +1,5 @@
 Use PBKDF2 for passwords
+https://dev.twitter.com/overview/api/users
 
 tweet
   - user id
@@ -22,3 +23,8 @@ user_tweet_favorite:
 followers:
     - follower_user_id
     - followed_user_id
+
+
+Using external
+https://github.com/catdad/tiny.toast # minimal toast
+https://milligram.github.io/ # minimal css
