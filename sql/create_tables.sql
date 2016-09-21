@@ -4,6 +4,7 @@ CREATE TABLE users (
   full_name varchar(64) NOT NULL,
   email varchar(64) UNIQUE NOT NULL,
   password varchar NOT NULL,
+  avatar varchar,
   timestamp timestamp default current_timestamp
 );
 
@@ -21,5 +22,6 @@ CREATE TABLE twaat (
 drop table if exists follower;
 create table follower (
   who_id integer,
-  whom_id integer
+  whom_id integer,
+  PRIMARY KEY(who_id, whom_id)
 );

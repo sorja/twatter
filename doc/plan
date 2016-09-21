@@ -24,6 +24,8 @@ followers:
     - follower_user_id
     - followed_user_id
 
+Add hashtags
+
 
 Using external
 https://github.com/catdad/tiny.toast # minimal toast

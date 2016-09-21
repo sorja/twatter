@@ -1,6 +1,9 @@
 from flask import Flask, flash, session, redirect, url_for, escape, request, render_template
 from flask.ext.login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
+
 import psycopg2
+import psycopg2.extras
+
 import pprint
 
 app = Flask(__name__)
@@ -18,7 +21,6 @@ login_manager.login_view = "index"
 
 class User(UserMixin):
     def __init__(self, id, full_name, email, password, created_at):
-        print('init')
         self.id = id
         self.email = email
         self.full_name = full_name
@@ -28,7 +30,9 @@ class User(UserMixin):
     def __repr__(self):
         return "%d/%s/%s" % (self.id, self.full_name, self.password)
 
-
+##################
+##    Routes    ##
+##################
 @app.route('/')
 def index():
     if(current_user.is_authenticated):
@@ -39,12 +43,47 @@ def index():
 @app.route('/profile')
 @login_required
 def profile(id=None):
-    return render_template('profile.html', id=id)
+    if not id:
+        return redirect(url_for('profile', id=current_user.id))
+    try:
+        conn = psycopg2.connect("dbname=sorja user=sorja")
+        cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        cur.execute("SELECT * FROM twaat t JOIN users u ON (u.id = t.user_id) WHERE user_id = %s and parent_id is null", (id,))
+        twaats = [dict(record) for record in cur.fetchall()] # it calls .fecthone() in loop
+        cur.execute("SELECT * FROM users WHERE id = %s", (id,))
+        user = cur.fetchone()
+        cur.close()
+        conn.close()
+    except Exception as e:
+        print e
+    return render_template('profile.html.jinja2', twaats=twaats, user=user)
 
 @app.route('/frontpage')
 @login_required
 def frontpage():
     return render_template('frontpage.html')
+
+@app.route('/register', methods=['POST'])
+def register():
+    full_name = request.form['full_name']
+    email     = request.form['email']
+    password  = request.form['password']
+
+    try:
+        conn = psycopg2.connect("dbname=sorja user=sorja")
+        cur = conn.cursor()
+        cur.execute("""
+        INSERT INTO users (full_name, email, password) VALUES (%s, %s, %s)
+        """, (full_name, email, password))
+        conn.commit()
+        cur.close()
+        conn.close()
+        # session['username'] = request.form['username']
+    except Exception as e:
+        if('duplicate' in e.pgerror):
+            flash('Email already exists')
+        print e
+    return redirect(url_for('index'))
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -74,32 +113,37 @@ def login():
         print e
     return redirect(url_for('index'))
 
-@app.route('/register', methods=['POST'])
-def register():
-    full_name = request.form['full_name']
-    email     = request.form['email']
-    password  = request.form['password']
-
-    try:
-        conn = psycopg2.connect("dbname=sorja user=sorja")
-        cur = conn.cursor()
-        cur.execute("""
-        INSERT INTO users (full_name, email, password) VALUES (%s, %s, %s)
-        """, (full_name, email, password))
-        conn.commit()
-        cur.close()
-        conn.close()
-        # session['username'] = request.form['username']
-    except Exception as e:
-        if('duplicate' in e.pgerror):
-            flash('Email already exists')
-        print e
-    return redirect(url_for('index'))
-
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+#helpers
+@app.route('/post_twaat', methods=['POST'])
+@app.route('/post_twaat/<id>', methods=['POST'])
+def post_twaat():
+    user_id = current_user.id
+    if id:
+        parent_id = id
+    text = request.form['twaat_text']
+    img = request.form['twaat_img']
+    print user_id, text, img
+    # try:
+    #     conn = psycopg2.connect("dbname=sorja user=sorja")
+    #     cur = conn.cursor()
+    #     cur.execute("""
+    #     INSERT INTO users (full_name, email, password) VALUES (%s, %s, %s)
+    #     """, (full_name, email, password))
+    #     conn.commit()
+    #     cur.close()
+    #     conn.close()
+    #     # session['username'] = request.form['username']
+    # except Exception as e:
+    #     if('duplicate' in e.pgerror):
+    #         flash('Email already exists')
+    #     print e
+    return redirect(url_for('index'))
+
 
 # handle login failed
 @app.errorhandler(401)
