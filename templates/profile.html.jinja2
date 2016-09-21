@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block body %}
+
   <div class="row">
     <!-- profile info -->
     <div class="colum column-33 profile_info">
@@ -33,6 +34,9 @@
     <!-- profile secondary info -->
     <div class="colum column-33">
       <ul class="profile-list">
+        {% if not user['id'] == current_user.id %}
+        <a href="#">Follow</a>
+        {% endif %}
         <li>Following: 42</li>
         <li>Followers: 12</li>
         <li>Favorited tweets: 15</li>

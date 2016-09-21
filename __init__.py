@@ -121,27 +121,25 @@ def logout():
 #helpers
 @app.route('/post_twaat', methods=['POST'])
 @app.route('/post_twaat/<id>', methods=['POST'])
-def post_twaat():
+def post_twaat(id=None):
     user_id = current_user.id
-    if id:
-        parent_id = id
+    parent_id = id
     text = request.form['twaat_text']
+    if not text:
+        redirect(url_for('index'))
     img = request.form['twaat_img']
-    print user_id, text, img
-    # try:
-    #     conn = psycopg2.connect("dbname=sorja user=sorja")
-    #     cur = conn.cursor()
-    #     cur.execute("""
-    #     INSERT INTO users (full_name, email, password) VALUES (%s, %s, %s)
-    #     """, (full_name, email, password))
-    #     conn.commit()
-    #     cur.close()
-    #     conn.close()
-    #     # session['username'] = request.form['username']
-    # except Exception as e:
-    #     if('duplicate' in e.pgerror):
-    #         flash('Email already exists')
-    #     print e
+    try:
+        conn = psycopg2.connect("dbname=sorja user=sorja")
+        cur = conn.cursor()
+        cur.execute("""
+        INSERT INTO twaat (user_id, text, img, parent_id) VALUES (%s, %s, %s, %s)
+        """, (user_id, text, img, parent_id))
+        conn.commit()
+        cur.close()
+        conn.close()
+        # session['username'] = request.form['username']
+    except Exception as e:
+        print e
     return redirect(url_for('index'))
 
 
