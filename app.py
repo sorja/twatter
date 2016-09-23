@@ -19,6 +19,9 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "index"
 
+#db settings
+db_string = "dbname=sorja user=sorja"
+
 class User(UserMixin):
     def __init__(self, id, full_name, email, password, created_at):
         self.id = id
@@ -46,7 +49,7 @@ def profile(id=None):
     if not id:
         return redirect(url_for('profile', id=current_user.id))
     try:
-        conn = psycopg2.connect("dbname=twatter user=mxo password=123")
+        conn = psycopg2.connect(db_string)
         cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
         cur.execute("SELECT * FROM twaat t JOIN users u ON (u.id = t.user_id) WHERE user_id = %s and parent_id is null", (id,))
         twaats = [dict(record) for record in cur.fetchall()] # it calls .fecthone() in loop
@@ -70,7 +73,7 @@ def register():
     password  = request.form['password']
 
     try:
-        conn = psycopg2.connect("dbname=twatter user=mxo password=123")
+        conn = psycopg2.connect(db_string)
         cur = conn.cursor()
         cur.execute("""
         INSERT INTO users (full_name, email, password) VALUES (%s, %s, %s)
@@ -129,7 +132,7 @@ def post_twaat(id=None):
         redirect(url_for('index'))
     img = request.form['twaat_img']
     try:
-        conn = psycopg2.connect("dbname=twatter user=mxo password=123")
+        conn = psycopg2.connect(db_string)
         cur = conn.cursor()
         cur.execute("""
         INSERT INTO twaat (user_id, text, img, parent_id) VALUES (%s, %s, %s, %s)
