@@ -46,7 +46,7 @@ def profile(id=None):
     if not id:
         return redirect(url_for('profile', id=current_user.id))
     try:
-        conn = psycopg2.connect("dbname=sorja user=sorja")
+        conn = psycopg2.connect("dbname=twatter user=mxo password=123")
         cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
         cur.execute("SELECT * FROM twaat t JOIN users u ON (u.id = t.user_id) WHERE user_id = %s and parent_id is null", (id,))
         twaats = [dict(record) for record in cur.fetchall()] # it calls .fecthone() in loop
@@ -70,7 +70,7 @@ def register():
     password  = request.form['password']
 
     try:
-        conn = psycopg2.connect("dbname=sorja user=sorja")
+        conn = psycopg2.connect("dbname=twatter user=mxo password=123")
         cur = conn.cursor()
         cur.execute("""
         INSERT INTO users (full_name, email, password) VALUES (%s, %s, %s)
@@ -90,7 +90,7 @@ def login():
     email = request.form['email']
     password = request.form['password']
     try:
-        conn = psycopg2.connect("dbname=sorja user=sorja")
+        conn = psycopg2.connect("host='localhost' dbname='twatter' user='mxo' password='123'")
         cur = conn.cursor()
         cur.execute("""
         SELECT * FROM users WHERE email=%s and password=%s
@@ -129,7 +129,7 @@ def post_twaat(id=None):
         redirect(url_for('index'))
     img = request.form['twaat_img']
     try:
-        conn = psycopg2.connect("dbname=sorja user=sorja")
+        conn = psycopg2.connect("dbname=twatter user=mxo password=123")
         cur = conn.cursor()
         cur.execute("""
         INSERT INTO twaat (user_id, text, img, parent_id) VALUES (%s, %s, %s, %s)
@@ -151,7 +151,7 @@ def page_not_found(e):
 @login_manager.user_loader
 def load_user(userid):
     try:
-        conn = psycopg2.connect("dbname=sorja user=sorja")
+        conn = psycopg2.connect("dbname=twatter user=mxo password=1")
         cur = conn.cursor()
         cur.execute("SELECT * FROM users WHERE id = %s", (userid,))
         query = cur.fetchone()
