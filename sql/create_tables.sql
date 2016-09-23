@@ -8,7 +8,7 @@ CREATE TABLE users (
   timestamp timestamp default current_timestamp
 );
 
-drop table if exists twaaat;
+drop table if exists twaat;
 CREATE TABLE twaat (
   id SERIAL PRIMARY KEY,
   user_id INTEGER REFERENCES users(id),
@@ -21,7 +21,7 @@ CREATE TABLE twaat (
 
 drop table if exists follower;
 create table follower (
-  who_id integer,
-  whom_id integer,
+  who_id integer REFERENCES users(id),
+  whom_id integer REFERENCES users(id),
   PRIMARY KEY(who_id, whom_id)
 );
