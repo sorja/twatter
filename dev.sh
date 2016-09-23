@@ -1,4 +1,4 @@
 #!/bin/bash
 export FLASK_DEBUG=1
-export FLASK_APP=__init__.py
+export FLASK_APP=app.py
 flask run
