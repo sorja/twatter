@@ -93,7 +93,7 @@ def login():
     email = request.form['email']
     password = request.form['password']
     try:
-        conn = psycopg2.connect("host='localhost' dbname='twatter' user='mxo' password='123'")
+        conn = psycopg2.connect(db_string)
         cur = conn.cursor()
         cur.execute("""
         SELECT * FROM users WHERE email=%s and password=%s
