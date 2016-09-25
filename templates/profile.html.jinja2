@@ -4,7 +4,7 @@
   <div class="row">
     <!-- profile info -->
     <div class="colum column-33 profile_info">
-      <h5>{{user['full_name']}}</h5>
+      <h5>{{user['full_name']|e}}</h5>
       <div class="avatar">
         {% if user['avatar'] %}
           <img class="" src="user['avatar']" alt="avatar" />
@@ -12,7 +12,7 @@
           <img class="" src="{{url_for('static', filename='img/no_avatar.png')}}" alt="avatar" />
         {% endif %}
       </div>
-      <a href="mailto:{{user['email']}}">{{user['email']}}</a>
+      <a href="mailto:{{user['email']}}">{{user['email']|e}}</a>
     </div>
 
     <!-- profile twaats -->
@@ -22,9 +22,9 @@
       <div class="twaats">
         {% for twaat in twaats %}
           <div class="twaat">
-            <span class="full_name float-right"><a href="{{url_for('profile', id=user['id'])}}">{{twaat.full_name}}</a></span>
+            <span class="full_name float-right"><a href="{{url_for('profile', id=user['id'])}}">{{twaat.full_name|e}}</a></span>
             <div class="twaat_text">
-              {{twaat.text}}
+              {{twaat.text|e}}
             </div>
           </div>
           <hr>

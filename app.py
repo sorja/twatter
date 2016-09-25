@@ -154,7 +154,7 @@ def page_not_found(e):
 @login_manager.user_loader
 def load_user(userid):
     try:
-        conn = psycopg2.connect("dbname=twatter user=mxo password=1")
+        conn = psycopg2.connect(db_string)
         cur = conn.cursor()
         cur.execute("SELECT * FROM users WHERE id = %s", (userid,))
         query = cur.fetchone()

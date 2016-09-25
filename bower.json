@@ -1,0 +1,21 @@
+{
+  "name": "twatter",
+  "homepage": "valit.us",
+  "authors": [
+    "sorja <miro.sorja@gmail.com>"
+  ],
+  "description": "School project for course 582203/2016/s/a/1",
+  "main": "",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bulma": "^0.2.0"
+  }
+}
