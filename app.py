@@ -1,10 +1,13 @@
 from flask import Flask, flash, session, redirect, url_for, escape, request, render_template
-from flask.ext.login import LoginManager, login_required, login_user, logout_user, current_user
+from flask_login import LoginManager, login_required, login_user, logout_user, current_user
 
 import psycopg2
 import psycopg2.extras
 
 from models.user import User
+import config
+
+print config.database
 
 app = Flask(__name__)
 
@@ -18,9 +21,6 @@ app.config.update(
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "index"
-
-#db settings
-db_string = "dbname=sorja user=sorja"
 
 ##################
 ##    Routes    ##
