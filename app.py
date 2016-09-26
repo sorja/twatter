@@ -1,10 +1,10 @@
 from flask import Flask, flash, session, redirect, url_for, escape, request, render_template
-from flask.ext.login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
+from flask.ext.login import LoginManager, login_required, login_user, logout_user, current_user
 
 import psycopg2
 import psycopg2.extras
 
-import pprint
+from models.user import User
 
 app = Flask(__name__)
 
@@ -21,17 +21,6 @@ login_manager.login_view = "index"
 
 #db settings
 db_string = "dbname=sorja user=sorja"
-
-class User(UserMixin):
-    def __init__(self, id, full_name, email, password, created_at):
-        self.id = id
-        self.email = email
-        self.full_name = full_name
-        self.password = password
-        self.created_at = created_at
-
-    def __repr__(self):
-        return "%d/%s/%s" % (self.id, self.full_name, self.password)
 
 ##################
 ##    Routes    ##
@@ -64,7 +53,18 @@ def profile(id=None):
 @app.route('/frontpage')
 @login_required
 def frontpage():
-    return render_template('frontpage.html')
+    db_query = "select * from twaat join follower on twaat.user_id = follower.whom_id inner join users on users.id = follower.whom_id where follower.who_id = %s";
+    try:
+        conn = psycopg2.connect(db_string)
+        cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        cur.execute(db_query, (current_user.id,))
+        twaats_followed = [dict(record) for record in cur.fetchall()] # it calls .fecthone() in loop
+
+        cur.close()
+        conn.close()
+    except Exception as e:
+        print e
+    return render_template('frontpage.html', twaats_followed = twaats_followed)
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -144,7 +144,6 @@ def post_twaat(id=None):
     except Exception as e:
         print e
     return redirect(url_for('index'))
-
 
 # handle login failed
 @app.errorhandler(401)

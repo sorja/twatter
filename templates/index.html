@@ -1,31 +1,60 @@
 {% extends "layout.html" %}
 {% block body %}
-  <div class="row">
-    <div class="column welcome_screen">
-      <h4>Welcome to Twatter.</h4>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-      </p>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-      </p>
+  <div class="columns">
+
+    <div class="column is-three-quarters">
+
+      <div class="content">
+        <h2>Welcome to Twatter.</h2>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+      </div>
+
     </div>
-    <div class="column column-25 column-offset-25">
+
+    <div class="column is-one-quarter">
+
       <form method="POST" action="/login">
         <fieldset>
-          <input type="text" placeholder="Username/email" name="email" autofocus>
-          <input type="password" placeholder="Password" name="password">
-          <input checked type="checkbox" id="stay_logged">
-          <label class="label-inline" for="stay_logged">Stay logged in</label>
-          <input id="login_button" class="float-right button-primary" type="submit" value="Login">
+          <p class="control has-icon">
+            <input class="input" type="text" placeholder="Email" name="email" autofocus>
+            <i class="fa fa-envelope"></i>
+          </p>
+          <p class="control has-addons has-icon">
+            <input class="input" type="password" placeholder="Password" name="password">
+            <i class="fa fa-lock"></i>
+            <button type="submit" class="button large is-success">
+              Login
+            </button>
+          </p>
+          <p class="control">
+            <label class="checkbox">
+              <input checked type="checkbox" name="stay_logged_in">
+              Remember me
+            </label>
+          </p>
         </fieldset>
       </form>
-      <hr />
+
+      <hr>
+
+      <h3 class="is-title">New user?</h3>
       <form method="POST" action="/register">
         <fieldset>
-          <h5 class="float-left">New user?<small> register</small></h5>
-          <input type="text" placeholder="Full name" name="full_name">
-          <input type="email" placeholder="Email" name="email">
+          <!-- Name -->
+          <p class="control has-icon">
+            <input class="input" type="text" placeholder="Name" name="full_name">
+            <i class="fa fa-user" aria-hidden="true"></i>
+          </p>
+          <!-- Email -->
+          <p class="control has-icon">
+            <input class="input" type="text" placeholder="Email" name="email" autofocus>
+            <i class="fa fa-envelope"></i>
+          </p>
           {% with messages = get_flashed_messages() %}
             {% if messages %}
               {% for message in messages %}
@@ -35,10 +64,18 @@
               {% endfor %}
             {% endif %}
           {% endwith %}
-          <input type="password" placeholder="Password" name="password">
-          <input id="login_button" class="float-right button button-outline register" type="submit" value="Register">
+          <!-- Password and button-->
+          <p class="control has-addons has-icon">
+            <input class="input" type="password" placeholder="Password" name="password">
+            <i class="fa fa-lock"></i>
+            <button type="submit" class="button">
+              Register
+            </button>
+          </p>
         </fieldset>
       </form>
+
     </div>
+
   </div>
 {% endblock %}

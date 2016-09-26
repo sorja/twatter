@@ -2,34 +2,81 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Twatter inc.</title>
-    <!-- Temporary toaster -->
-    <script src="http://catdad.github.io/tiny.cdn/lib/toast/1.0.0/toast.min.js"></script>
+    <title>Twatter inc. {% block header %}{% endblock %}</title>
     <link rel="icon" type="image/ico" href="{{ url_for('static', filename='img/fav.ico') }}">
-    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/milligram-1.1.0/dist/milligram.min.css') }}">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='bower_components/bulma/css/bulma.css') }}">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='bower_components/font-awesome/css/font-awesome.min.css') }}">
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
   </head>
   <body>
-    <div class="row">
-      <div class="column">
-        <h1><a href="{{url_for('index')}}">Twatter.</a></h1>
-      </div>
-      <div class="column column-25 column-offset-50 nav_right">
-        {% if current_user.is_authenticated %}
-              Hi <a class="profile_link"href="{{url_for('profile')}}">{{ current_user.full_name }}</a>!
-              <small class="logout_link"><a href="{{url_for('logout')}}">logout</a></small>
-        {% else %}
-          <a class="letter_spacing" href="#">github</a>
-        {% endif %}
-      </div>
-    </div>
-    <div class="container">
-      {% block body %}{% endblock %}
-      <div class="row">
-        <div class="column"><br />
-          &copy; sorja
+
+    <nav class="nav has-shadow">
+      <div class="container">
+        <div class="nav-left">
+          <h1 class="title"><a class="nav-item is-brand" href="{{url_for('index')}}">Twatter.</a></h1>
+        </div>
+
+        <div class="nav-center">
+          <a class="nav-item" href="https://github.com/sorja/twatter">
+            <span class="icon">
+              <i class="fa fa-github"></i>
+            </span>
+          </a>
+        </div>
+
+        <div class="nav-right nav-menu">
+
+          <!-- Logon/logout -->
+          {% if current_user.is_authenticated %}
+            <span class="nav-item"><a class="button is-primary" href="{{url_for('profile')}}">{{ current_user.full_name }}</a></span>
+          {% endif %}
+
+          <!-- Documentation link -->
+          <a class="nav-item" href="https://github.com/sorja/twatter/blob/master/doc/Documentation.pdf">
+            Documentation
+          </a>
+
+          {% if current_user.is_authenticated %}
+            <span class="nav-item"><a class="button outlined" href="{{url_for('logout')}}">logout</a></span>
+          {% else %}
+            <!-- Tweet button -->
+            <span class="nav-item">
+              <a class="button" href="https://twitter.com/intent/tweet?text=Wanna complain? Try:&url=http://valit.us">
+                <span class="icon">
+                  <i class="fa fa-twitter"></i>
+                </span>
+                <span>Tweet</span>
+              </a>
+            </span>
+          {% endif %}
+
+
         </div>
       </div>
-    </div>
+    </nav>
+    <section class="section">
+      <div class="container">
+        {% block body %}{% endblock %}
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="content has-text-centered">
+          <p>
+            <strong>Twatter</strong> by <a href="http://github.com/sorja">Miró Sorja</a>. The source code is licensed
+            <a href="http://opensource.org/licenses/mit-license.php">MIT</a>.
+          </p>
+          <p>
+            <a class="icon" href="https://github.com/sorja/twatter">
+              <i class="fa fa-github"></i>
+            </a>
+          </p>
+        </div>
+      </div>
+    </footer>
+
+
+
   </body>
 </html>

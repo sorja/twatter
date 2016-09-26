@@ -89,3 +89,5 @@ ENV/
 .ropeproject
 doc/Document.pages
 uwsgi.ini
+.DS_Store
+static/bower_components/
