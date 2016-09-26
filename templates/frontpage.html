@@ -14,60 +14,18 @@
               <textarea class="textarea" placeholder="Whats up, {{current_user.full_name.split()[0]}}" name="twaat_text"></textarea>
             </p>
               <input class="button is-primary is-medium" type="submit" value="Send"><br/>
-              <span class="" for="twaat_image"><small>need an img?</small></span>
-              <input class="" id="twaat_image" type="file" name="twaat_img" accept="image/*">
+              <!-- <span class="" for="twaat_image"><small>need an img?</small></span>
+              <input class="" id="twaat_image" type="file" name="twaat_img" accept="image/*"> -->
       </form>
       <hr/>
       <!-- Tweets -->
       {% for twaat in twaats_followed|reverse %}
-      <div class="box">
-        <article class="media">
-          <div class="media-left">
-            <figure class="image is-64x64">
-              {% if twaat['avatar'] %}
-                <img class="" src="twaat['avatar']" alt="avatar" />
-              {% else %}
-                <img class="" src="{{url_for('static', filename='img/no_avatar.png')}}" alt="avatar" />
-              {% endif %}
-            </figure>
-          </div>
-          <div class="media-content">
-            <div class="content">
-              <p>
-                <!-- upper -->
-                <strong>{{twaat.full_name|e}}</strong>
-                <small><a href="{{url_for('profile', id=twaat['user_id'])}}">@{{twaat['full_name']|e}}</a></small>
-                <small>{{twaat.timestamp|e}}</small>
-                <!-- /upper -->
-                <br>
-                {{twaat['text']|e}}
-              </p>
-            </div>
-            <!-- bottom: reply, retwat, like -->
-            <nav class="level">
-              <div class="level-left">
-                <a class="level-item">
-                  <span class="icon is-small"><i class="fa fa-reply"></i></span>
-                </a>
-                <a class="level-item">
-                  <span class="icon is-small"><i class="fa fa-retweet"></i></span>
-                </a>
-                <a class="level-item">
-                  <span class="icon is-small"><i class="fa fa-heart"></i></span>
-                </a>
-              </div>
-            </nav>
-            <!-- /bottom -->
-          </div>
-        </article>
-      </div>
+      {% include "twaat.html.jinja2" %}
       {% endfor %}
     </div>
     <div class="column">
       <div class="content">
-        <h5>Followed twatters</h5>
-        <p>Maybe change thsi to show follower/followed?</p>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        {% include "rightnav.html.jinja2" %}
       </div>
     </div>
   </div>

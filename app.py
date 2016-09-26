@@ -1,20 +1,17 @@
 from flask import Flask, flash, session, redirect, url_for, escape, request, render_template
 from flask_login import LoginManager, login_required, login_user, logout_user, current_user
 
-import psycopg2
-import psycopg2.extras
-
 from models.user import User
+from database.utils import *
 import config
-
-print config.database
+db_string = "dbname=sorja user=sorja"
 
 app = Flask(__name__)
 
 #config
 app.config.update(
-    DEBUG = True,
-    SECRET_KEY = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
+    DEBUG = config.app['debug'],
+    SECRET_KEY = config.app['secret_key']
 )
 
 #flask-login
@@ -38,22 +35,20 @@ def profile(id=None):
     if not id:
         return redirect(url_for('profile', id=current_user.id))
     try:
-        conn = psycopg2.connect(db_string)
-        cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-        cur.execute("SELECT * FROM twaat t JOIN users u ON (u.id = t.user_id) WHERE user_id = %s and parent_id is null", (id,))
-        twaats = [dict(record) for record in cur.fetchall()] # it calls .fecthone() in loop
-        cur.execute("SELECT * FROM users WHERE id = %s", (id,))
-        user = cur.fetchone()
-        cur.close()
-        conn.close()
+        user = get_one_with_id('users', id)
+        _twaats = get_custom_query("SELECT * FROM twaat t JOIN users u ON (u.id = t.user_id) WHERE user_id = %s and parent_id is null", (id,))
+        twaats = [dict(record) for record in _twaats]
     except Exception as e:
-        print e
+        raise
     return render_template('profile.html.jinja2', twaats=twaats, user=user)
 
 @app.route('/frontpage')
 @login_required
 def frontpage():
-    db_query = "select * from twaat join follower on twaat.user_id = follower.whom_id inner join users on users.id = follower.whom_id where follower.who_id = %s";
+    db_query = "select *, twaat.id as twaat_id from twaat join follower on twaat.user_id = follower.whom_id inner join users on users.id = follower.whom_id where follower.who_id = %s";
+    following_count = len(get_fields_from_table_with_id('*', 'follower', 'who_id', current_user.id))
+    follower_count = len(get_fields_from_table_with_id('*', 'follower', 'whom_id', current_user.id))
+
     try:
         conn = psycopg2.connect(db_string)
         cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
@@ -64,7 +59,10 @@ def frontpage():
         conn.close()
     except Exception as e:
         print e
-    return render_template('frontpage.html', twaats_followed = twaats_followed)
+    return render_template('frontpage.html',
+                            twaats_followed = twaats_followed,
+                            following_count = following_count,
+                            follower_count = follower_count)
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -117,6 +115,7 @@ def login():
     return redirect(url_for('index'))
 
 @app.route('/logout')
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('index'))
@@ -124,6 +123,7 @@ def logout():
 #helpers
 @app.route('/post_twaat', methods=['POST'])
 @app.route('/post_twaat/<id>', methods=['POST'])
+@login_required
 def post_twaat(id=None):
     user_id = current_user.id
     parent_id = id
@@ -144,6 +144,21 @@ def post_twaat(id=None):
     except Exception as e:
         print e
     return redirect(url_for('index'))
+
+@app.route('/favorite_twaat/<id>', methods=['POST'])
+@login_required
+def favorite_twaat(id=None):
+    favorited_twaats = get_favorited_twaats_for_user(current_user.id)
+    if any(x['twaat_id'] == int(id) for x in favorited_twaats):
+        flash('Incorrect email or password', 'errors')
+        return 'nok'
+    #If this was not already favorited by user add it and incerement
+    insert_new_favorite_twaat_for_id(id, current_user.id)
+    update_custom_query('''
+    UPDATE twaat SET favorited_count = favorited_count + 1 where id = %s
+    ''', (id))
+    return 'ok'
+
 
 # handle login failed
 @app.errorhandler(401)

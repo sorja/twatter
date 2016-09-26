@@ -1,4 +1,3 @@
-drop table if exists user;
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
   full_name varchar(64) NOT NULL,
@@ -8,7 +7,6 @@ CREATE TABLE users (
   timestamp timestamp default current_timestamp
 );
 
-drop table if exists twaat;
 CREATE TABLE twaat (
   id SERIAL PRIMARY KEY,
   user_id INTEGER REFERENCES users(id),
@@ -16,10 +14,15 @@ CREATE TABLE twaat (
   text varchar(256),
   img varchar(512),
   timestamp timestamp default current_timestamp,
-  favorited_count INTEGER
+  favorited_count INTEGER DEFAULT 0
 );
 
-drop table if exists follower;
+CREATE TABLE favorited_twaats (
+  who_id integer REFERENCES users(id),
+  twaat_id integer REFERENCES twaat(id),
+  PRIMARY KEY(who_id, twaat_id)
+);
+
 create table follower (
   who_id integer REFERENCES users(id),
   whom_id integer REFERENCES users(id),

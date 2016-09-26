@@ -1,0 +1,43 @@
+{% block twaat %}
+  <div class="box">
+    <article class="media">
+      <div class="media-left">
+        <figure class="image is-64x64">
+          {% if twaat['avatar'] %}
+            <img class="" src="twaat['avatar']" alt="avatar" />
+          {% else %}
+            <img class="" src="{{url_for('static', filename='img/no_avatar.png')}}" alt="avatar" />
+          {% endif %}
+        </figure>
+      </div>
+      <div class="media-content">
+        <div class="content">
+          <p>
+            <!-- upper -->
+            <strong>{{twaat.full_name|e}}</strong>
+            <small><a href="{{url_for('profile', id=twaat['user_id'])}}">@{{twaat['full_name']|e}}</a></small>
+            <small>{{twaat.timestamp.strftime("%d.%m.%Y %H:%M")|e}}</small>
+            <!-- /upper -->
+            <br>
+            {{twaat['text']|e}}
+          </p>
+        </div>
+        <!-- bottom: reply, retwat, like -->
+        <nav class="level">
+          <div class="level-left">
+            <a class="level-item">
+              <span class="icon is-small"><i class="fa fa-reply"></i></span>
+            </a>
+            <a class="level-item">
+              <span class="icon is-small"><i class="fa fa-retweet"></i></span>
+            </a>
+            <a onClick="post_favorite_twaat({{twaat['twaat_id']}})" class="level-item">
+              <span class="icon is-small"><i class="fa fa-heart"></i></span>
+            </a>
+          </div>
+        </nav>
+        <!-- /bottom -->
+      </div>
+    </article>
+  </div>
+{% endblock %}

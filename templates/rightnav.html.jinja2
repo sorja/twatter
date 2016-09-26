@@ -1,0 +1,22 @@
+{% block rightnav %}
+<table style="margin-top:25px;" class="table is-bordered">
+<tr>
+  <td class="is-icon">
+    <a href="#">
+      <i class="fa fa-user"></i>
+    </a>
+  </td>
+  <th>Following</th>
+  <td>{{following_count}}</td>
+</tr>
+  <tr>
+    <td class="is-icon">
+      <a href="#">
+        <i class="fa fa-users"></i>
+      </a>
+    </td>
+    <th>Followers</th>
+    <td>{{follower_count}}</td>
+  </tr>
+</table>
+{% endblock %}
