@@ -2,31 +2,38 @@
 {% block body %}
 
   <div class="columns">
-    <div class="column">
+    <div class="column is-2">
+      {% with user=current_user %}
       {% include "leftnav.html.jinja2" %}
+      {% endwith %}
     </div>
 
-    <div class="column is-two-thirds">
+    <div class="column is-8">
       <form method="POST" action="/post_twaat">
           <label class="label">Twaat of the day?</label>
-            <p class="control">
-              <textarea class="textarea" placeholder="Whats up, {{current_user.full_name.split()[0]}}" name="twaat_text"></textarea>
-            </p>
-              <input class="button is-primary is-medium" type="submit" value="Send"><br/>
-              <!-- <span class="" for="twaat_image"><small>need an img?</small></span>
-              <input class="" id="twaat_image" type="file" name="twaat_img" accept="image/*"> -->
+          <p class="control">
+            <textarea
+            class="textarea"
+            placeholder="Whats up, {{current_user.full_name.split()[0]}}"
+            name="twaat_text"></textarea>
+          </p>
+            <input class="button is-primary is-medium" type="submit" value="Send"><br/>
+            <!-- <span class="" for="twaat_image"><small>need an img?</small></span>
+            <input class="" id="twaat_image" type="file" name="twaat_img" accept="image/*"> -->
       </form>
       <hr/>
       <!-- Tweets -->
+      <h3 class="is-title">Following</h3>
       {% for twaat in twaats_followed|reverse %}
       {% include "twaat.html.jinja2" %}
       {% endfor %}
     </div>
 
-    <div class="column">
+    <div class="column is-1">
       <div class="content">
         {% include "rightnav.html.jinja2" %}
       </div>
     </div>
+
   </div>
 {% endblock %}

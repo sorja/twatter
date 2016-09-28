@@ -2,6 +2,9 @@ import psycopg2
 import psycopg2.extras
 from .. import config
 
+def get_connection():
+    return psycopg2.connect(config.db['db_string'])
+
 #GET STUFF
 
 def get_one_with_id(table, id):
@@ -26,8 +29,6 @@ def get_fields_from_table_with_id(fields, table, id_name, id):
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     cur.execute(query, (fields, id))
     results = cur.fetchall()
-    print results
-    print query
     cur.close()
     conn.close()
     return results
@@ -83,12 +84,27 @@ def insert_new_favorite_twaat_for_id(twaat_id, user_id):
         print e
         return e
 
+def insert_new_twaat(user_id, text, parent_id):
+    try:
+        conn = get_connection()
+        cur = conn.cursor()
+        cur.execute("""
+        INSERT INTO twaat (user_id, text, parent_id) VALUES (%s, %s, %s)
+        """, (user_id, text, parent_id))
+        conn.commit()
+        cur.close()
+        conn.close()
+        # session['username'] = request.form['username']
+    except Exception as e:
+        print e
+        return e
+
 
 # UPDATE STUFF
 
 def update_custom_query(query, vars=None):
     try:
-        conn = psycopg2.connect(config.db['db_string'])
+        conn = get_connection()
         cur = conn.cursor()
         cur.execute(query, vars)
         conn.commit()

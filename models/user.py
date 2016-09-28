@@ -7,6 +7,8 @@ class User(UserMixin):
         self.full_name = full_name
         self.password = password
         self.created_at = created_at
+        #hack
+        self.timestamp = created_at
 
     def __repr__(self):
-        return "%d/%s/%s" % (self.id, self.full_name, self.password)
+        return "%d / %s / %s / %s / %s" % (self.id, self.email, self.full_name, self.password, self.created_at)

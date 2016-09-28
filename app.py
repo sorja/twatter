@@ -4,7 +4,7 @@ from flask_login import LoginManager, login_required, login_user, logout_user, c
 from models.user import User
 from database.utils import *
 import config
-db_string = "dbname=sorja user=sorja"
+db_string = config.db['db_string']
 
 app = Flask(__name__)
 
@@ -107,7 +107,6 @@ def login():
              query[2],
              query[3],
              query[4])
-        print user
         login_user(user)
         return redirect(url_for('index'))
     except Exception as e:
@@ -125,24 +124,13 @@ def logout():
 @app.route('/post_twaat/<id>', methods=['POST'])
 @login_required
 def post_twaat(id=None):
-    user_id = current_user.id
     parent_id = id
     text = request.form['twaat_text']
     if not text:
         redirect(url_for('index'))
-    img = request.form['twaat_img']
-    try:
-        conn = psycopg2.connect(db_string)
-        cur = conn.cursor()
-        cur.execute("""
-        INSERT INTO twaat (user_id, text, img, parent_id) VALUES (%s, %s, %s, %s)
-        """, (user_id, text, img, parent_id))
-        conn.commit()
-        cur.close()
-        conn.close()
-        # session['username'] = request.form['username']
-    except Exception as e:
-        print e
+    # img = request.form['twaat_img']
+    print parent_id, current_user.id, text
+    insert_new_twaat(current_user.id, text, parent_id)
     return redirect(url_for('index'))
 
 @app.route('/favorite_twaat/<id>', methods=['POST'])

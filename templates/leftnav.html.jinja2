@@ -1,5 +1,43 @@
 {% block leftnav %}
+
 <aside class="menu">
+  <!-- card -->
+  <div class="card">
+    <div class="card-image">
+      <figure class="image is-4by3">
+        {% if user['avatar'] %}
+          <img class="" src="user['avatar']" alt="avatar" />
+        {% else %}
+          <img class="" src="{{url_for('static', filename='img/no_avatar.png')}}" alt="avatar" />
+        {% endif %}
+      </figure>
+    </div>
+    <div class="card-content">
+      <div class="media">
+        <div class="media-left">
+          <figure class="image is-32x32">
+            {% if user['avatar'] %}
+              <img class="" src="user['avatar']" alt="avatar" />
+            {% else %}
+              <img class="" src="{{url_for('static', filename='img/no_avatar.png')}}" alt="avatar" />
+            {% endif %}
+          </figure>
+        </div>
+        <div class="media-content">
+          <p class="title is-5">{{user['full_name']|e}}</p>
+          <p class="subtitle is-6"><a href="mailto:{{user['email']}}">{{user['full_name']|e}}</a></p>
+        </div>
+      </div>
+      <div class="content">
+        Tahan description about self tms jotain muuta. <a href="/">@twatter</a>.
+        <a href="#">#cs</a> <a href="#">#helsinki</a> <a href="#">#ohtu</a>
+        <br>
+        <small>{{user.timestamp.strftime("%d.%m.%Y %H:%M")|e}}</small>
+      </div>
+    </div>
+  </div>
+  <!-- /card -->
+  <!-- menu -->
   <p class="menu-label">
     General
   </p>
@@ -14,5 +52,6 @@
     <li><a href="/settings">Settings</a></li>
     <li><a href="#">Privacy</a></li>
   </ul>
+  <!-- /menu -->
 </aside>
 {% endblock %}
