@@ -5,6 +5,7 @@
     <div class="column">
       {% include "leftnav.html.jinja2" %}
     </div>
+
     <div class="column is-two-thirds">
       <form method="POST" action="/post_twaat">
           <label class="label">Twaat of the day?</label>
@@ -21,6 +22,7 @@
       {% include "twaat.html.jinja2" %}
       {% endfor %}
     </div>
+
     <div class="column">
       <div class="content">
         {% include "rightnav.html.jinja2" %}

@@ -1,9 +1,9 @@
 {% extends "layout.html" %}
 {% block body %}
 
-  <div class="row">
+  <div class="columns">
     <!-- profile info -->
-    <div class="colum column-33 profile_info">
+    <div class="colum profile_info">
       <h5>{{user['full_name']|e}}</h5>
       <div class="avatar">
         {% if user['avatar'] %}
@@ -17,7 +17,7 @@
 
     <!-- profile twaats -->
 
-    <div class="column column-66">
+    <div class="column is-two-thirds">
       <h2>twaats</h2>
       <div class="twaats">
         {% for twaat in twaats %}
@@ -32,7 +32,7 @@
       </div>
     </div>
     <!-- profile secondary info -->
-    <div class="colum column-33">
+    <div class="colum">
       <ul class="profile-list">
         {% if not user['id'] == current_user.id %}
         <a href="#">Follow</a>

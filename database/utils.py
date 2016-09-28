@@ -7,9 +7,10 @@ from .. import config
 def get_one_with_id(table, id):
     assert table
     assert id
+    query = "SELECT * FROM {} WHERE id = %s".format(table)
     conn = psycopg2.connect(config.db['db_string'])
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    cur.execute("SELECT * FROM %s WHERE id = %s", (table,id))
+    cur.execute(query, (id,))
     result = cur.fetchone()
     cur.close()
     conn.close()
