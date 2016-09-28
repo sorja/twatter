@@ -21,9 +21,20 @@
             <!-- <span class="" for="twaat_image"><small>need an img?</small></span>
             <input class="" id="twaat_image" type="file" name="twaat_img" accept="image/*"> -->
       </form>
+      <hr>
+      <h5 class="title">My twaats </h5>
+      <h2 class="subtitle">latest</h2>
+      <div class="columns">
+      {% for twaat in my_twaats|reverse %}
+      <div class="column">
+      {% include "twaat.html.jinja2" %}
+      </div>
+      {% endfor %}
+      </div>
+      <span class="is-pulled-right"><a href="/profile">...more</a></span>
       <hr/>
       <!-- Tweets -->
-      <h3 class="is-title">Following</h3>
+      <h5 class="title">Following</h5>
       {% for twaat in twaats_followed|reverse %}
       {% include "twaat.html.jinja2" %}
       {% endfor %}

@@ -13,7 +13,7 @@
       <h2>twaats</h2>
       <hr>
       <div class="twaats">
-        {% for twaat in twaats %}
+        {% for twaat in twaats|reverse %}
           {% include "twaat.html.jinja2"%}
         {% endfor %}
       </div>

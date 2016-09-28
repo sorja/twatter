@@ -3,6 +3,9 @@ from flask_login import LoginManager, login_required, login_user, logout_user, c
 
 from models.user import User
 from database.utils import *
+
+import pprint
+
 import config
 db_string = config.db['db_string']
 
@@ -48,19 +51,30 @@ def frontpage():
     db_query = "select *, twaat.id as twaat_id from twaat join follower on twaat.user_id = follower.whom_id inner join users on users.id = follower.whom_id where follower.who_id = %s";
     following_count = len(get_fields_from_table_with_id('*', 'follower', 'who_id', current_user.id))
     follower_count = len(get_fields_from_table_with_id('*', 'follower', 'whom_id', current_user.id))
-
+    my_twaats = []
     try:
         conn = psycopg2.connect(db_string)
         cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
         cur.execute(db_query, (current_user.id,))
         twaats_followed = [dict(record) for record in cur.fetchall()] # it calls .fecthone() in loop
 
+        _twaats = get_custom_query("SELECT * FROM twaat t JOIN users u ON (u.id = t.user_id) WHERE user_id = %s and parent_id is null", (current_user.id,))
+        twaats = [dict(record) for record in _twaats]
+
         cur.close()
         conn.close()
     except Exception as e:
         print e
+
+    twaats.reverse()
+    my_twaats = twaats[:2]
+    pprint.pprint(my_twaats)
+    print len(twaats)
+    print len(my_twaats)
+
     return render_template('frontpage.html',
                             twaats_followed = twaats_followed,
+                            my_twaats = my_twaats,
                             following_count = following_count,
                             follower_count = follower_count)
 
