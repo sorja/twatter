@@ -1,5 +1,7 @@
 Twatter
 ------
+![screehonshot of project](doc/screenshot.png)
+
 School project for course [582203/2016/s/a/1](https://www.cs.helsinki.fi/courses/582203/2016/s/a/1)  
 
 Cheap knock off of Twitter which is probably created around whining (valitus)  
@@ -27,3 +29,8 @@ Cheap knock off of Twitter which is probably created around whining (valitus)
 4. update config.py  
 5. chmod +x dev.sh (optional, if missing)  
 6. ./dev  
+
+---
+Road to GET
+
+![road to template](doc/road_to_template.png)
