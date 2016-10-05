@@ -1,5 +1,6 @@
 import psycopg2
 import psycopg2.extras
+from ..models.user import User
 from twatter import config
 
 def get_connection():
@@ -65,6 +66,28 @@ def get_favorited_twaats_for_user(id):
     cur.close()
     conn.close()
     return twaats
+
+def get_search_results(type, term):
+    term = str(term.lower())
+    query = '';
+    if type.lower() in 'users':
+        query = """SELECT * FROM users WHERE lower(full_name) like %s """
+    if type.lower() == 'tags':
+        return ['not implemented yet']
+
+    try:
+        conn = psycopg2.connect(config.db['db_string'])
+        cur = conn.cursor()
+        cur.execute(query, (['%'+term+'%']))
+        search_results = cur.fetchall()
+        #some problems with psycon, doesnt accept loop here..
+        cur.close()
+        conn.close()
+        return [User(x[0], x[1], x[2], x[3], x[4], x[5], x[6]) for x in search_results]
+    except Exception as e:
+        print e
+        return e
+    
 
 # INSERT stuff
 

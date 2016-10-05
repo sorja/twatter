@@ -17,11 +17,28 @@
         </div>
 
         <div class="nav-center">
+          {% if current_user.is_authenticated %}
+          <form method="POST" action="/search">
+            <p class="nav-item control has-addons">
+              <span class="select">
+                <select name="type">
+                  <option value="users">Users</option>
+                  <option value="tags">#Tags</option>
+                </select>
+              </span>
+              <input name="query" class="input" type="text" placeholder="..?">
+              <button type="submit" class="button is-secondary">
+                Search
+              </button>
+            </p>
+          </form>
+          {% else %}
           <a class="nav-item" href="https://github.com/sorja/twatter">
             <span class="icon">
               <i class="fa fa-github"></i>
             </span>
           </a>
+          {% endif %}
         </div>
 
         <div class="nav-right nav-menu">

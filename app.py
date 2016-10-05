@@ -68,9 +68,6 @@ def frontpage():
 
     twaats.reverse()
     my_twaats = twaats[:2]
-    pprint.pprint(my_twaats)
-    print len(twaats)
-    print len(my_twaats)
 
     return render_template('frontpage.html',
                             twaats_followed = twaats_followed,
@@ -115,12 +112,13 @@ def login():
         conn.close()
         if not query:
             flash('Incorrect email or password')
-        user = User(
-             query[0],
-             query[1],
-             query[2],
-             query[3],
-             query[4])
+        user = User(query[0],
+                    query[1],
+                    query[2],
+                    query[3],
+                    query[4],
+                    query[5],
+                    query[6])
         login_user(user)
         return redirect(url_for('index'))
     except Exception as e:
@@ -143,7 +141,6 @@ def post_twaat(id=None):
     if not text:
         redirect(url_for('index'))
     # img = request.form['twaat_img']
-    print parent_id, current_user.id, text
     insert_new_twaat(current_user.id, text, parent_id)
     return redirect(url_for('index'))
 
@@ -161,6 +158,24 @@ def favorite_twaat(id=None):
     ''', (id))
     return 'ok'
 
+@app.route('/search_results/<type>/<query>', methods=['GET'])
+def search_results(query=None, type=None):
+    if query is None or type is None:
+        return redirect(url_for('index'))
+
+    if 'tag' in type:
+        flash('Not implemented yet', 'errors')
+        return redirect(url_for('index'))
+    
+    search_results = get_search_results(type, query);
+    return render_template('search_results.html.jinja2', search_results=search_results)
+
+@app.route('/search', methods=['POST'])
+def search():
+    query = request.form['query']
+    type  = request.form['type']
+    print type, query
+    return redirect(url_for('search_results', query=query, type=type))
 
 # handle login failed
 @app.errorhandler(401)
@@ -173,15 +188,10 @@ def load_user(userid):
         conn = psycopg2.connect(db_string)
         cur = conn.cursor()
         cur.execute("SELECT * FROM users WHERE id = %s", (userid,))
-        query = cur.fetchone()
+        x = cur.fetchone()
         cur.close()
         conn.close()
-        return User(
-             query[0],
-             query[1],
-             query[2],
-             query[3],
-             query[4])
+        return User(x[0], x[1], x[2], x[3], x[4], x[5], x[6])
     except Exception as e:
         print e
     return None

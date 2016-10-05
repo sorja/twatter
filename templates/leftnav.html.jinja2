@@ -6,7 +6,7 @@
     <div class="card-image">
       <figure class="image is-4by3">
         {% if user['avatar'] %}
-          <img class="" src="user['avatar']" alt="avatar" />
+          <img class="" src="{{user['avatar']}}" alt="avatar" />
         {% else %}
           <img class="" src="{{url_for('static', filename='img/no_avatar.png')}}" alt="avatar" />
         {% endif %}

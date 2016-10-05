@@ -1,0 +1,80 @@
+{% extends "layout.html" %}
+{% block body %}
+
+  <div class="columns">
+    <!-- profile info -->
+    <div class="column is-2">
+      {% with user=current_user %}
+      {% include "leftnav.html.jinja2" %}
+      {% endwith %}
+    </div>
+
+    <!-- search_results -->
+
+    <div class="column is-8">
+ 
+ <!--    def __init__(self, id, full_name, email, password, created_at, avatar):-->
+
+      {% for search_result_row in search_results | batch(3) %}
+      <div class="columns">
+          {% for s in search_result_row %}
+          <div class="column is-one-third">
+          <!--card-->
+            <div class="card">
+              <div class="card-image">
+                <figure class="image is-4by3">
+                  {% if s.avatar %}
+                    <img class="" src="{{s.avatar}}" alt="avatar" />
+                  {% else %}
+                    <img class="" src="{{url_for('static', filename='img/no_avatar.png')}}" alt="avatar" />
+                  {% endif %}
+                </figure>
+              </div>
+              <div class="card-content">
+                <div class="media">
+                  <div class="media-left">
+                    <figure class="image is-32x32">
+                      {% if s.avatar %}
+                        <img class="" src="s.avatar" alt="avatar" />
+                      {% else %}
+                        <img class="" src="{{url_for('static', filename='img/no_avatar.png')}}" alt="avatar" />
+                      {% endif %}
+                    </figure>
+                  </div>
+                  <div class="media-content">
+                    <p class="title is-5">{{s.full_name|e}}</p>
+                    <p class="subtitle is-6"><a href="mailto:{{s.email}}">{{s.full_name|e}}</a></p>
+                  </div>
+                </div>
+                <div class="content">
+                  {% if s.description %}
+                    {{s.description}}
+                  {% else%}
+                     no description :(
+                  {% endif %}
+                  <br>
+                  <small>{{s.timestamp}}</small>
+                </div>
+              </div>
+            </div>
+            <!--/card-->
+          </div>
+          {% endfor %}
+          <hr />
+      </div>
+      <hr />
+      
+      {% endfor %}
+
+    </div>
+  <!-- /search_results-->
+
+      
+
+
+    <!-- profile secondary info -->
+    <div class="column is-1">
+      {% include "rightnav.html.jinja2" %}
+    </div>
+  </div>
+{% endblock %}
