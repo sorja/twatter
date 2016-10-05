@@ -1,8 +1,8 @@
 Twatter
 ------
+**See it live**: http://www.valit.us/   
 **user** 123
 **password** 123
-**See it live**: http://www.valit.us/
 
 ![screehonshot of project](doc/screenshot.png)
 
