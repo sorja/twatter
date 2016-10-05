@@ -4,6 +4,7 @@ CREATE TABLE users (
   email varchar(64) UNIQUE NOT NULL,
   password varchar NOT NULL,
   avatar varchar,
+  description varchar(256),
   timestamp timestamp default current_timestamp
 );
 
