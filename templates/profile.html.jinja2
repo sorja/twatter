@@ -10,7 +10,7 @@
     <!-- profile twaats -->
 
     <div class="column is-8">
-      <h2>twaats</h2>
+      <h2 class="title">twaats</h2>
       <hr>
       <div class="twaats">
         {% for twaat in twaats|reverse %}
@@ -23,4 +23,8 @@
       {% include "rightnav.html.jinja2" %}
     </div>
   </div>
+
+<!--MODAL-->
+      {% include "file_upload_modal.html.jinja2" %}
+<!--/MODAL-->
 {% endblock %}
