@@ -1,5 +1,8 @@
 Twatter
 ------
+**user** 123
+**password** 123
+
 ![screehonshot of project](doc/screenshot.png)
 
 School project for course [582203/2016/s/a/1](https://www.cs.helsinki.fi/courses/582203/2016/s/a/1)  
