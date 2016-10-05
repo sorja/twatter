@@ -15,7 +15,8 @@ CREATE TABLE twaat (
   text varchar(256),
   img varchar(512),
   timestamp timestamp default current_timestamp,
-  favorited_count INTEGER DEFAULT 0
+  favorited_count INTEGER DEFAULT 0,
+  deleted boolean default false
 );
 
 CREATE TABLE favorited_twaats (
