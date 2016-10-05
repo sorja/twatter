@@ -138,3 +138,17 @@ def update_custom_query(query, vars=None):
             return 'Twaat already favorited'
         print e
         return e
+
+def update_user_avatar(id, path):
+    try:
+        conn = get_connection()
+        cur = conn.cursor()
+        cur.execute("""UPDATE users SET avatar = %s  WHERE id = %s""", (path, id))
+        conn.commit()
+        cur.close()
+        conn.close()
+    except Exception as e:
+        if('duplicate' in e.pgerror):
+            return 'Twaat already favorited'
+        print e
+        return e
