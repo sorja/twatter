@@ -1,0 +1,21 @@
+{% block leftnav %}
+<div class="modal" id="upload_file">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Change avatar</p>
+      <button onclick=closeModal() class="delete"></button>
+    </header>
+    <form method="POST" action="/upload_avatar" enctype="multipart/form-data">
+      <section class="modal-card-body">
+      <small> no effort for the looks here </small>
+      <input class="input file" name="file" type="file" />
+      </section>
+      <footer class="modal-card-foot">
+        <button type="submit" class="button is-primary">Save changes</button>
+        <a onclick=closeModal() class="button close-modal">Cancel</a>
+    </footer>
+    </form>
+  </div>
+</div>
+{% endblock %}
