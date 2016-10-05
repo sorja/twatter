@@ -24,7 +24,7 @@
               <div class="card-image">
                 <figure class="image is-4by3">
                   {% if s.avatar %}
-                    <img class="" src="{{s.avatar}}" alt="avatar" />
+                    <img class="" src="{{url_for('static', filename='uploads/avatars/'+s.avatar)}}" alt="avatar" />
                   {% else %}
                     <img class="" src="{{url_for('static', filename='img/no_avatar.png')}}" alt="avatar" />
                   {% endif %}
@@ -35,7 +35,7 @@
                   <div class="media-left">
                     <figure class="image is-32x32">
                       {% if s.avatar %}
-                        <img class="" src="s.avatar" alt="avatar" />
+                        <img class="" src="{{url_for('static', filename='uploads/avatars/'+s.avatar)}}" alt="avatar" />
                       {% else %}
                         <img class="" src="{{url_for('static', filename='img/no_avatar.png')}}" alt="avatar" />
                       {% endif %}
