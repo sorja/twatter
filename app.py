@@ -1,5 +1,7 @@
+import os, errno, time
 from flask import Flask, flash, session, redirect, url_for, escape, request, render_template
 from flask_login import LoginManager, login_required, login_user, logout_user, current_user
+from werkzeug.utils import secure_filename
 
 from models.user import User
 from database.utils import *
@@ -10,11 +12,12 @@ import config
 db_string = config.db['db_string']
 
 app = Flask(__name__)
-
 #config
 app.config.update(
     DEBUG = config.app['debug'],
-    SECRET_KEY = config.app['secret_key']
+    SECRET_KEY = config.app['secret_key'],
+    MAX_CONTENT_LENGTH = config.app['max_content_length'],
+    UPLOAD_FOLDER = config.app['upload_folder']
 )
 
 #flask-login
@@ -43,7 +46,13 @@ def profile(id=None):
         twaats = [dict(record) for record in _twaats]
     except Exception as e:
         raise
-    return render_template('profile.html.jinja2', twaats=twaats, user=user)
+    db_query = "select *, twaat.id as twaat_id from twaat join follower on twaat.user_id = follower.whom_id inner join users on users.id = follower.whom_id where follower.who_id = %s";
+    following_count = len(get_fields_from_table_with_id('*', 'follower', 'who_id', current_user.id))
+    follower_count = len(get_fields_from_table_with_id('*', 'follower', 'whom_id', current_user.id))
+    return render_template('profile.html.jinja2',
+                            twaats=twaats, user=user,
+                            following_count = following_count,
+                            follower_count = follower_count)
 
 @app.route('/frontpage')
 @login_required
@@ -159,6 +168,7 @@ def favorite_twaat(id=None):
     return 'ok'
 
 @app.route('/search_results/<type>/<query>', methods=['GET'])
+@login_required
 def search_results(query=None, type=None):
     if query is None or type is None:
         return redirect(url_for('index'))
@@ -171,11 +181,36 @@ def search_results(query=None, type=None):
     return render_template('search_results.html.jinja2', search_results=search_results)
 
 @app.route('/search', methods=['POST'])
+@login_required
 def search():
     query = request.form['query']
     type  = request.form['type']
     print type, query
     return redirect(url_for('search_results', query=query, type=type))
+
+@app.route('/upload_avatar', methods=['POST'])
+@login_required
+def upload_avatar():
+    def allowed_file(filename):
+        return '.' in filename and \
+           filename.rsplit('.', 1)[1] in config.app['allowed_extenstions']
+    if 'file' not in request.files:
+        flash('No file found', errors)
+        redirect(request.url)
+    
+    file = request.files['file']
+    if file.filename == '':
+        flash('No selected file')
+        return redirect(request.url)
+    
+    if file and allowed_file(file.filename):
+        path = app.config['UPLOAD_FOLDER']+'/avatars'
+        filename = '{}_{}.{}'.format(int(time.time()), current_user.id, file.filename.split('.')[-1])
+        filename = secure_filename(filename)
+        file.save(os.path.join(path, filename))
+    # also update for user!
+    update_user_avatar(current_user.id, filename)
+    return redirect(url_for('profile'))
 
 # handle login failed
 @app.errorhandler(401)
