@@ -92,3 +92,4 @@ uwsgi.ini
 .DS_Store
 static/bower_components/
 config.py
+settings_locals.py
