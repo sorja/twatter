@@ -42,7 +42,11 @@
 
     <div class="column is-1">
       <div class="content">
-        {% include "rightnav.html.jinja2" %}
+        {% with followers_length=followers|length %}
+        {% with following_length=following|length %}
+          {% include "rightnav.html.jinja2" %}
+        {% endwith %}
+        {% endwith %}
       </div>
     </div>
 

@@ -1,33 +1,36 @@
-import os, errno, time
+import os, sys, errno, time
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from flask import Flask, flash, session, redirect, url_for, escape, request, render_template
 from flask_login import LoginManager, login_required, login_user, logout_user, current_user
 from werkzeug.utils import secure_filename
 
-from models.user import User
-from database.utils import *
-
-import pprint
-
 import config
-db_string = config.db['db_string']
-
 app = Flask(__name__)
-#config
-app.config.update(
-    DEBUG = config.app['debug'],
-    SECRET_KEY = config.app['secret_key'],
-    MAX_CONTENT_LENGTH = config.app['max_content_length'],
-    UPLOAD_FOLDER = config.app['upload_folder']
-)
 
-#flask-login
-login_manager = LoginManager()
-login_manager.init_app(app)
-login_manager.login_view = "index"
+app.debug = config.DEBUG
+app.secret_key = config.SECRET_KEY
+app.MAX_CONTENT_LENGTH = config.MAX_CONTENT_LENGTH
+app.UPLOAD_FOLDER = config.UPLOAD_FOLDER
+
+#  fix this
+# #import views
+# print ['.'.join((x, 'views')) for x in config.APPLICATIONS]
+# for view in config.APPLICATIONS:
+#     try:
+#         module_name = '.'.join((view, 'views'))
+#         __import__(module_name)
+#     except ImportError as e:
+#         pass
+#     else:
+#         print 'imported: %s' % module_name
 
 ##################
 ##    Routes    ##
 ##################
+
+import authentication.views
+import frontpage.views
+
 @app.route('/')
 def index():
     if(current_user.is_authenticated):
@@ -54,91 +57,35 @@ def profile(id=None):
                             following_count = following_count,
                             follower_count = follower_count)
 
-@app.route('/frontpage')
-@login_required
-def frontpage():
-    db_query = "select *, twaat.id as twaat_id from twaat join follower on twaat.user_id = follower.whom_id inner join users on users.id = follower.whom_id where follower.who_id = %s";
-    following_count = len(get_fields_from_table_with_id('*', 'follower', 'who_id', current_user.id))
-    follower_count = len(get_fields_from_table_with_id('*', 'follower', 'whom_id', current_user.id))
-    my_twaats = []
-    try:
-        conn = psycopg2.connect(db_string)
-        cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-        cur.execute(db_query, (current_user.id,))
-        twaats_followed = [dict(record) for record in cur.fetchall()] # it calls .fecthone() in loop
+# @app.route('/frontpage')
+# @login_required
+# def frontpage():
+#     # db_query = "select *, twaat.id as twaat_id from twaat join follower on twaat.user_id = follower.whom_id inner join users on users.id = follower.whom_id where follower.who_id = %s";
+#     # following_count = len(get_fields_from_table_with_id('*', 'follower', 'who_id', current_user.id))
+#     # follower_count = len(get_fields_from_table_with_id('*', 'follower', 'whom_id', current_user.id))
+#     my_twaats = []
+#     # try:
+#     #     conn = psycopg2.connect(db_string)
+#     #     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+#     #     cur.execute(db_query, (current_user.id,))
+#     #     twaats_followed = [dict(record) for record in cur.fetchall()] # it calls .fecthone() in loop
 
-        _twaats = get_custom_query("SELECT * FROM twaat t JOIN users u ON (u.id = t.user_id) WHERE user_id = %s and parent_id is null", (current_user.id,))
-        twaats = [dict(record) for record in _twaats]
+#     #     _twaats = get_custom_query("SELECT * FROM twaat t JOIN users u ON (u.id = t.user_id) WHERE user_id = %s and parent_id is null", (current_user.id,))
+#     #     twaats = [dict(record) for record in _twaats]
 
-        cur.close()
-        conn.close()
-    except Exception as e:
-        print e
+#     #     cur.close()
+#     #     conn.close()
+#     # except Exception as e:
+#     #     print e
 
-    twaats.reverse()
-    my_twaats = twaats[:2]
+#     # twaats.reverse()
+#     # my_twaats = twaats[:2]
 
-    return render_template('frontpage.html',
-                            twaats_followed = twaats_followed,
-                            my_twaats = my_twaats,
-                            following_count = following_count,
-                            follower_count = follower_count)
-
-@app.route('/register', methods=['POST'])
-def register():
-    full_name = request.form['full_name']
-    email     = request.form['email']
-    password  = request.form['password']
-
-    try:
-        conn = psycopg2.connect(db_string)
-        cur = conn.cursor()
-        cur.execute("""
-        INSERT INTO users (full_name, email, password) VALUES (%s, %s, %s)
-        """, (full_name, email, password))
-        conn.commit()
-        cur.close()
-        conn.close()
-        # session['username'] = request.form['username']
-    except Exception as e:
-        if('duplicate' in e.pgerror):
-            flash('Email already exists')
-        print e
-    return redirect(url_for('index'))
-
-@app.route('/login', methods=['POST'])
-def login():
-    email = request.form['email']
-    password = request.form['password']
-    try:
-        conn = psycopg2.connect(db_string)
-        cur = conn.cursor()
-        cur.execute("""
-        SELECT * FROM users WHERE email=%s and password=%s
-        """, (email, password))
-        query = cur.fetchone()
-        cur.close()
-        conn.close()
-        if not query:
-            flash('Incorrect email or password')
-        user = User(query[0],
-                    query[1],
-                    query[2],
-                    query[3],
-                    query[4],
-                    query[5],
-                    query[6])
-        login_user(user)
-        return redirect(url_for('index'))
-    except Exception as e:
-        print e
-    return redirect(url_for('index'))
-
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    return redirect(url_for('index'))
+#     return render_template('frontpage.html',
+#                             twaats_followed = [],
+#                             my_twaats = my_twaats,
+#                             following_count = 3,
+#                             follower_count = 1)
 
 #helpers
 @app.route('/post_twaat', methods=['POST'])
@@ -212,21 +159,3 @@ def upload_avatar():
     update_user_avatar(current_user.id, filename)
     return redirect(url_for('profile'))
 
-# handle login failed
-@app.errorhandler(401)
-def page_not_found(e):
-    return Response('<p>Login failed</p>')
-
-@login_manager.user_loader
-def load_user(userid):
-    try:
-        conn = psycopg2.connect(db_string)
-        cur = conn.cursor()
-        cur.execute("SELECT * FROM users WHERE id = %s", (userid,))
-        x = cur.fetchone()
-        cur.close()
-        conn.close()
-        return User(x[0], x[1], x[2], x[3], x[4], x[5], x[6])
-    except Exception as e:
-        print e
-    return None
