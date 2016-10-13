@@ -36,3 +36,7 @@ h1 {
 .file {
   padding-top:6px;
 }
+
+#change_avatar{
+  cursor:crosshair;
+}

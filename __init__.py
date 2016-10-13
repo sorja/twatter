@@ -7,7 +7,6 @@ from twatter import app
 sys.path.insert(0, config.PROJ_DIR)
 
 if __name__ == "__main__":
-    print type(app)
     app.run(host='0.0.0.0')
 
 

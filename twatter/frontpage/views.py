@@ -9,8 +9,6 @@ from twatter.twatter.utils import db, query
 
 from twatter.twatter.frontpage import queries as fp_queries
 
-from pprint import pprint
-
 @app.route('/frontpage', methods=['GET'])
 @login_required
 def frontpage():
@@ -31,7 +29,6 @@ def frontpage():
         fp_queries.MyTwaats(current_user.id)
     )
     ctx.update(my_twaats)
-    pprint(ctx)
     return render_template('frontpage.html', **ctx)
 
 # @app.route('/frontpage')

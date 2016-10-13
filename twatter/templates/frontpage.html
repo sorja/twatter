@@ -1,10 +1,9 @@
 {% extends "layout.html" %}
 {% block body %}
-
   <div class="columns">
     <div class="column is-2">
-      {% with user=current_user %}
-      {% include "leftnav.html.jinja2" %}
+      {% with user = current_user %}
+        {% include "leftnav.html.jinja2" %}
       {% endwith %}
     </div>
 
@@ -35,7 +34,7 @@
       <hr/>
       <!-- Tweets -->
       <h5 class="title">Following</h5>
-      {% for twaat in twaats_followed|reverse %}
+      {% for twaat in followed_twaats|reverse %}
       {% include "twaat.html.jinja2" %}
       {% endfor %}
     </div>

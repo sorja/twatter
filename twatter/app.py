@@ -30,6 +30,7 @@ app.UPLOAD_FOLDER = config.UPLOAD_FOLDER
 
 import authentication.views
 import frontpage.views
+import profile.views
 
 @app.route('/')
 def index():
@@ -37,25 +38,25 @@ def index():
         return redirect(url_for('frontpage'))
     return render_template('index.html')
 
-@app.route('/profile/<id>')
-@app.route('/profile')
-@login_required
-def profile(id=None):
-    if not id:
-        return redirect(url_for('profile', id=current_user.id))
-    try:
-        user = get_one_with_id('users', id)
-        _twaats = get_custom_query("SELECT * FROM twaat t JOIN users u ON (u.id = t.user_id) WHERE user_id = %s and parent_id is null", (id,))
-        twaats = [dict(record) for record in _twaats]
-    except Exception as e:
-        raise
-    db_query = "select *, twaat.id as twaat_id from twaat join follower on twaat.user_id = follower.whom_id inner join users on users.id = follower.whom_id where follower.who_id = %s";
-    following_count = len(get_fields_from_table_with_id('*', 'follower', 'who_id', current_user.id))
-    follower_count = len(get_fields_from_table_with_id('*', 'follower', 'whom_id', current_user.id))
-    return render_template('profile.html.jinja2',
-                            twaats=twaats, user=user,
-                            following_count = following_count,
-                            follower_count = follower_count)
+# @app.route('/profile/<id>')
+# @app.route('/profile')
+# @login_required
+# def profile(id=None):
+#     if not id:
+#         return redirect(url_for('profile', id=current_user.id))
+#     try:
+#         user = get_one_with_id('users', id)
+#         _twaats = get_custom_query("SELECT * FROM twaat t JOIN users u ON (u.id = t.user_id) WHERE user_id = %s and parent_id is null", (id,))
+#         twaats = [dict(record) for record in _twaats]
+#     except Exception as e:
+#         raise
+#     db_query = "select *, twaat.id as twaat_id from twaat join follower on twaat.user_id = follower.whom_id inner join users on users.id = follower.whom_id where follower.who_id = %s";
+#     following_count = len(get_fields_from_table_with_id('*', 'follower', 'who_id', current_user.id))
+#     follower_count = len(get_fields_from_table_with_id('*', 'follower', 'whom_id', current_user.id))
+#     return render_template('profile.html.jinja2',
+#                             twaats=twaats, user=user,
+#                             following_count = following_count,
+#                             follower_count = follower_count)
 
 # @app.route('/frontpage')
 # @login_required
@@ -132,7 +133,6 @@ def search_results(query=None, type=None):
 def search():
     query = request.form['query']
     type  = request.form['type']
-    print type, query
     return redirect(url_for('search_results', query=query, type=type))
 
 @app.route('/upload_avatar', methods=['POST'])

@@ -4,8 +4,9 @@
   <div class="columns">
     <!-- profile info -->
     <div class="column is-2">
-      {% include "leftnav.html.jinja2" %}
-    </div>
+      {% with active_page = "profile" %}
+        {% include "leftnav.html.jinja2" %}
+      {% endwith %}    </div>
 
     <!-- profile twaats -->
 
@@ -23,8 +24,4 @@
       {% include "rightnav.html.jinja2" %}
     </div>
   </div>
-
-<!--MODAL-->
-      {% include "file_upload_modal.html.jinja2" %}
-<!--/MODAL-->
 {% endblock %}

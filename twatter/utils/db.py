@@ -21,7 +21,7 @@ db_connection = DbConnection()
 
 #Investigate how to use gevent for multi db fetch
 
-def fetch(sql_query):
+def fetch(sql_query, to_dict=False):
     q = sql_query
     conn = db_connection.get()
     cursor = conn.cursor(cursor_factory=DictCursor)
@@ -31,6 +31,10 @@ def fetch(sql_query):
         r = getattr(cursor, q.result_action)()
         q.result = r
         result[q.name] = r
+        if to_dict:
+            #zip column names to values ex. {'id': 1}
+            column_names = [x[0] for x in cursor.description]
+            result[q.name] = [dict(zip(column_names, x)) for x in r]
     except:
         conn.rollback()
         raise

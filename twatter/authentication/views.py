@@ -24,7 +24,6 @@ def register():
     result = db.fetch(
         auth_queries.Register(full_name, email, password)
     )
-    print 'new user created with id: {}'.format(result)
     return redirect(url_for('index'))
 
 @app.route('/login', methods=['POST'])
@@ -53,5 +52,4 @@ def load_user(userid):
     result = db.fetch (
         auth_queries.VerifyUser((userid))
     )
-    print(result)
     return models.User(*result['verify_user'])

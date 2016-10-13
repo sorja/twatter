@@ -93,6 +93,12 @@
       </div>
     </footer>
 
+    {% if current_user.is_authenticated %}
+    <!--MODAL-->
+          {% include "file_upload_modal.html.jinja2" %}
+    <!--/MODAL-->
+    {% endif %}
+
     <script src="{{ url_for('static', filename='javascript/app.js') }}"></script>
 
   </body>

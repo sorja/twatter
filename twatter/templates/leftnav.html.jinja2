@@ -1,21 +1,20 @@
 {% block leftnav %}
-
+{% set navigation_bar = [
+    ('/frontpage', 'frontpage', 'Feed'),
+    ('/profile', 'profile', 'Me')
+] -%}
 <aside class="menu">
+{{user.id == current_user.id}}
   <!-- card -->
   <div class="card">
     <div class="card-image">
-      <figure class="image is-4by3">
+      <figure class="image is-4by3" {% if current_user.id == user.id %}id="change_avatar" title="Change avatar"{% endif %}>
         {% if user['avatar'] %}
           <img class="" src="{{url_for('static', filename='uploads/avatars/'+user['avatar'])}}" alt="avatar" />
         {% else %}
           <img class="" src="{{url_for('static', filename='img/no_avatar.png')}}" alt="avatar" />
         {% endif %}
       </figure>
-      {% if current_user.id == user.id and request.endpoint == 'profile' %}
-      <!-- CHANGE  AVATAR -->
-        <a style="width:100%" id="change_avatar" class="button">Change avatar</a>
-      <!-- /CHANGE AVATAR -->
-      {% endif %}
     </div>
     <div class="card-content">
       <div class="media">
@@ -47,18 +46,21 @@
   <!-- /card -->
   <!-- menu -->
   <p class="menu-label">
-    General
+    General {{active_page}}
   </p>
   <ul class="menu-list">
-    <li><a class="is-active" href="/frontpage">Feed</a></li>
-    <li><a href="/profile">Me</a></li>
+  {% for href, id, caption in navigation_bar %}
+    <li>
+      <a{% if id == active_page %} class="is-active"{% endif %} href="{{ href|e }}">{{ caption|e }}</a>
+    </li>
+    {% endfor %}
   </ul>
   <p class="menu-label">
     Settings
   </p>
   <ul class="menu-list">
-    <li><a href="/settings">Settings</a></li>
-    <li><a href="#">Privacy</a></li>
+    <li class="is-disabled"><a href="/settings">Settings</a></li>
+    <li class="is-disabled"><a href="#">Privacy</a></li>
   </ul>
   <!-- /menu -->
 </aside>
