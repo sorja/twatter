@@ -95,17 +95,17 @@ def index():
 #                             follower_count = 1)
 
 #helpers
-@app.route('/post_twaat', methods=['POST'])
-@app.route('/post_twaat/<id>', methods=['POST'])
-@login_required
-def post_twaat(id=None):
-    parent_id = id
-    text = request.form['twaat_text']
-    if not text:
-        redirect(url_for('index'))
-    # img = request.form['twaat_img']
-    insert_new_twaat(current_user.id, text, parent_id)
-    return redirect(url_for('index'))
+# @app.route('/post_twaat', methods=['POST'])
+# @app.route('/post_twaat/<id>', methods=['POST'])
+# @login_required
+# def post_twaat(id=None):
+#     parent_id = id
+#     text = request.form['twaat_text']
+#     if not text:
+#         redirect(url_for('index'))
+#     # img = request.form['twaat_img']
+#     insert_new_twaat(current_user.id, text, parent_id)
+#     return redirect(url_for('index'))
 
 # @app.route('/search_results/<type>/<query>', methods=['GET'])
 # @login_required

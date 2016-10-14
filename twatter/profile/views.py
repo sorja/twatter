@@ -44,7 +44,6 @@ def unfolow(id=None):
         profile_queries.Unfollow(current_user.id, id)
     )
     ctx.update(unfollow)
-    print ctx
     return redirect(url_for('profile', id=id))
 
 @app.route('/follow/<id>', methods=['GET'])
@@ -57,5 +56,4 @@ def follow(id=None):
         profile_queries.Follow(current_user.id, id)
     )
     ctx.update(follow)
-    print ctx
     return redirect(url_for('profile', id=id))

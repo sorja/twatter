@@ -51,6 +51,7 @@ class Twaat(query.SQLQuery):
             FROM twaat t
             INNER JOIN users u on t.user_id = u.id
             WHERE t.user_id=%s
+            ORDER BY t.timestamp desc
             LIMIT 1
     '''
 
@@ -60,11 +61,21 @@ class Twaat(query.SQLQuery):
 class Search(query.SQLQuery):
         name = 'search_results'
         sql = '''
-                SELECT * FROM users WHERE lower(full_name) LIKE %(like)s ESCAPE '='
+                SELECT * FROM users WHERE lower(full_name) LIKE %(like)s ESCAPE '=' LIMIT 25
         '''
 
         def __init__(self, name):
                 self.params = dict(like= '%'+name+'%')
+
+class InsertTwaat(query.SQLQuery):
+        name = 'insert_twaat'
+        result_action = 'fetchone'
+        sql = '''
+                INSERT INTO twaat (user_id, text, parent_id) VALUES (%s, %s, %s) RETURNING *
+        '''
+
+        def __init__(self, user_id, text, parent_id=None):
+                self.params = (user_id, text, parent_id)
 
 
 

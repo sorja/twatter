@@ -31,6 +31,22 @@ def frontpage():
     ctx.update(twaat)
     return render_template('frontpage.html', **ctx)
 
+@app.route('/post_twaat', methods=['POST'])
+@app.route('/post_twaat/<id>', methods=['POST'])
+@login_required
+def post_twaat(id=None):
+    parent_id = id
+    text = request.form['twaat_text']
+    if not text:
+        redirect(url_for('index'))
+    # img = request.form['twaat_img']
+    ctx = {}
+    insert_twaat = db.fetch(
+        fp_queries.InsertTwaat(current_user.getid(), text, parent_id)
+    )
+    ctx.update(insert_twaat)
+    return redirect(url_for('index', **ctx))
+
 @app.route('/search_results/<type>/<query>', methods=['GET'])
 @login_required
 def search_results(query=None, type=None):

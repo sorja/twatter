@@ -11,14 +11,14 @@
 
     <!-- search_results -->
 
-    <div class="column is-8">
+    <div class="column is-6">
  
  <!--    def __init__(self, id, full_name, email, password, created_at, avatar):-->
 
       {% for search_result_row in search_results | batch(3) %}
       <div class="columns">
           {% for s in search_result_row %}
-          <div class="column is-6">
+          <div class="column is-one-third">
           <!--card-->
             <div class="card">
               <div class="card-image">

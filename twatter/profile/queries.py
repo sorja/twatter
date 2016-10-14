@@ -22,6 +22,7 @@ class MyTwaats(query.SQLQuery):
             FROM twaat t
             INNER JOIN users u on t.user_id = u.id
             WHERE t.user_id=%s
+            ORDER BY t.timestamp ASC
     '''
 
     def __init__(self, userid):
