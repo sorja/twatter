@@ -56,3 +56,37 @@ class Twaat(query.SQLQuery):
 
     def __init__(self, userid):
         self.params = [userid]
+
+class Search(query.SQLQuery):
+        name = 'search_results'
+        sql = '''
+                SELECT * FROM users WHERE lower(full_name) LIKE %(like)s ESCAPE '='
+        '''
+
+        def __init__(self, name):
+                self.params = dict(like= '%'+name+'%')
+
+
+
+
+# def get_search_results(type, term):
+#     term = str(term.lower())
+#     query = '';
+#     if type.lower() in 'users':
+#         query = """SELECT * FROM users WHERE lower(full_name) like %s """
+#     if type.lower() == 'tags':
+#         return ['not implemented yet']
+
+#     try:
+#         conn = psycopg2.connect(config.db['db_string'])
+#         cur = conn.cursor()
+#         cur.execute(query, (['%'+term+'%']))
+#         search_results = cur.fetchall()
+#         #some problems with psycon, doesnt accept loop here..
+#         cur.close()
+#         conn.close()
+#         return [User(x[0], x[1], x[2], x[3], x[4], x[5], x[6]) for x in search_results]
+#     except Exception as e:
+#         print e
+#         return e
+    

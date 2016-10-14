@@ -107,25 +107,25 @@ def post_twaat(id=None):
     insert_new_twaat(current_user.id, text, parent_id)
     return redirect(url_for('index'))
 
-@app.route('/search_results/<type>/<query>', methods=['GET'])
-@login_required
-def search_results(query=None, type=None):
-    if query is None or type is None:
-        return redirect(url_for('index'))
+# @app.route('/search_results/<type>/<query>', methods=['GET'])
+# @login_required
+# def search_results(query=None, type=None):
+#     if query is None or type is None:
+#         return redirect(url_for('index'))
 
-    if 'tag' in type:
-        flash('Not implemented yet', 'errors')
-        return redirect(url_for('index'))
+#     if 'tag' in type:
+#         flash('Not implemented yet', 'errors')
+#         return redirect(url_for('index'))
     
-    search_results = get_search_results(type, query);
-    return render_template('search_results.html.j2', search_results=search_results)
+#     search_results = get_search_results(type, query);
+#     return render_template('search_results.html.j2', search_results=search_results)
 
-@app.route('/search', methods=['POST'])
-@login_required
-def search():
-    query = request.form['query']
-    type  = request.form['type']
-    return redirect(url_for('search_results', query=query, type=type))
+# @app.route('/search', methods=['POST'])
+# @login_required
+# def search():
+#     query = request.form['query']
+#     type  = request.form['type']
+#     return redirect(url_for('search_results', query=query, type=type))
 
 @app.route('/upload_avatar', methods=['POST'])
 @login_required
