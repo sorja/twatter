@@ -1,10 +1,10 @@
 {% block leftnav %}
 {% set navigation_bar = [
     ('/frontpage', 'frontpage', 'Feed'),
-    ('/profile', 'profile', 'Me')
+    ('/profile', 'profile', 'Me'),
+    ('/loved', 'loved', '<span class="fa fa-heart"></span>')
 ] -%}
 <aside class="menu">
-{{user.id == current_user.id}}
   <!-- card -->
   <div class="card">
     <div class="card-image">
@@ -51,7 +51,7 @@
   <ul class="menu-list">
   {% for href, id, caption in navigation_bar %}
     <li>
-      <a{% if id == active_page %} class="is-active"{% endif %} href="{{ href|e }}">{{ caption|e }}</a>
+      <a{% if id == active_page %} class="is-active"{% endif %} href="{{ href|e }}">{{ caption }}</a>
     </li>
     {% endfor %}
   </ul>

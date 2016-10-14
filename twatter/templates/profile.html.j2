@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block body %}
+
+  <div class="columns">
+    <!-- profile info -->
+    <div class="column is-3">
+      {% with active_page = "profile" %}
+        {% include "leftnav.html.j2" %}
+      {% endwith %}
+    </div>
+
+    <!-- profile twaats -->
+
+    <div class="column is-6">
+      <h2 class="title">TWAATS</h2>
+      <hr>
+      <div class="twaats">
+        {% for twaat in my_twaats|reverse %}
+          {% include "twaat.html.j2"%}
+        {% endfor %}
+      </div>
+    </div>
+    <!-- profile secondary info -->
+    <div class="column is-3">
+        <!-- fix this -->
+        {% with followers_length=18 %}
+        {% with following_length=101 %}
+          {% include "rightnav.html.j2" %}
+        {% endwith %}
+        {% endwith %}    
+      </div>
+  </div>
+{% endblock %}

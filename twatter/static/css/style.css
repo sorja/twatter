@@ -40,3 +40,10 @@ h1 {
 #change_avatar{
   cursor:crosshair;
 }
+#hover #hover_show{
+  display:none;
+}
+#hover:hover #hover_show{
+  color: #9b4dca;
+  display: initial;
+}

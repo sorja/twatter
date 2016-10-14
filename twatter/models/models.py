@@ -2,7 +2,7 @@ from flask_login  import UserMixin
 class User(UserMixin):
     __tablename__ = 'users'
     def __init__(self, id, full_name, email, password, created_at, avatar, description):
-        self.id = id
+        self.id = str(id)
         self.email = email
         self.full_name = full_name
         self.password = password
@@ -11,6 +11,27 @@ class User(UserMixin):
         self.timestamp = created_at
         self.avatar = avatar
         self.description = description
+
+    def getid(self):
+        return int(self.id)
+
+    def __repr__(self):
+        return "%d / %s / %s / %s / %s" % (self.id, self.email, self.full_name, self.password, self.created_at)
+
+class Twaat():
+    __tablename__ = 'twaat'
+    def __init__(self, id, user_id, parent_id, text, img, timestamp, favorited_count, delete):
+        self.id = id
+        self.user_id = user_id
+        self.parent_id = parent_id
+        self.text = text
+        self.img = img
+        self.timestamp = timestamp
+        self.favorited_count = favorited_count
+        self.deleted = deleted
+
+    def getid(self):
+        return int(self.id)
 
     def __repr__(self):
         return "%d / %s / %s / %s / %s" % (self.id, self.email, self.full_name, self.password, self.created_at)

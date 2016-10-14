@@ -1,5 +1,8 @@
 {% block twaat %}
   <div class="box">
+    {% if deletable %}
+    <a {% if deletable %} href="{{url_for('unlove', id=twaat['id'])}}"{% endif %}class="icon is-small is-pulled-right"><i class="fa fa-times"></i></a>
+    {% endif %}
     <article class="media">
       <div class="media-left">
         <figure class="image is-64x64">
@@ -31,12 +34,30 @@
             <a class="level-item">
               <span class="icon is-small"><i class="fa fa-retweet"></i></span>
             </a>
-            <a onClick="post_favorite_twaat({{twaat['id']}})" class="level-item">
+            <a href="{{url_for('love', id=twaat['id'])}}" class="level-item">
               <span class="icon is-small"><i class="fa fa-heart"></i></span>
             </a>
           </div>
+          <div class="level-right">
+            {% if twaat.favorited_count > 0 %}
+            <!-- LOVE AMOUNT -->
+            <a class="level-item" id="hover">
+              <span id="hover_show">
+                {{twaat.favorited_count}}
+              </span>
+              <span class="icon is-normal">
+                <i class="fa fa-heart-o"></i>
+              </span>
+            </a>
+            {% endif %}
+            </div>
         </nav>
         <!-- /bottom -->
+      </div>
+      <div class="media-right">
+      
+
+
       </div>
     </article>
   </div>

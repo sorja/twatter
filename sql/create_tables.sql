@@ -28,5 +28,6 @@ CREATE TABLE favorited_twaats (
 create table follower (
   who_id integer REFERENCES users(id),
   whom_id integer REFERENCES users(id),
+  deleted boolean default false,
   PRIMARY KEY(who_id, whom_id)
 );

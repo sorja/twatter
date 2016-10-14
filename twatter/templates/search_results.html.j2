@@ -5,7 +5,7 @@
     <!-- profile info -->
     <div class="column is-2">
       {% with user=current_user %}
-      {% include "leftnav.html.jinja2" %}
+      {% include "leftnav.html.j2" %}
       {% endwith %}
     </div>
 
@@ -74,7 +74,7 @@
 
     <!-- profile secondary info -->
     <div class="column is-1">
-      {% include "rightnav.html.jinja2" %}
+      {% include "rightnav.html.j2" %}
     </div>
   </div>
 {% endblock %}

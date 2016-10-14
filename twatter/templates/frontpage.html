@@ -1,13 +1,16 @@
 {% extends "layout.html" %}
 {% block body %}
   <div class="columns">
-    <div class="column is-2">
+    <div class="column is-3">
       {% with user = current_user %}
-        {% include "leftnav.html.jinja2" %}
+      {% with active_page = "frontpage" %}
+        {% include "leftnav.html.j2" %}
+      {% endwith %}
       {% endwith %}
     </div>
 
-    <div class="column is-8">
+
+    <div class="column is-6">
       <form method="POST" action="/post_twaat">
           <label class="label">Twaat of the day?</label>
           <p class="control">
@@ -21,29 +24,26 @@
             <input class="" id="twaat_image" type="file" name="twaat_img" accept="image/*"> -->
       </form>
       <hr>
-      <h5 class="title">My twaats </h5>
-      <h2 class="subtitle">latest</h2>
+      <h5 class="title">My last TWAATs </h5>
       <div class="columns">
-      {% for twaat in my_twaats|reverse %}
       <div class="column">
-      {% include "twaat.html.jinja2" %}
+      {% include "twaat.html.j2" %}
       </div>
-      {% endfor %}
       </div>
       <span class="is-pulled-right"><a href="/profile">...more</a></span>
       <hr/>
       <!-- Tweets -->
       <h5 class="title">Following</h5>
       {% for twaat in followed_twaats|reverse %}
-      {% include "twaat.html.jinja2" %}
+      {% include "twaat.html.j2" %}
       {% endfor %}
     </div>
 
-    <div class="column is-1">
+    <div class="column is-3">
       <div class="content">
         {% with followers_length=followers|length %}
         {% with following_length=following|length %}
-          {% include "rightnav.html.jinja2" %}
+          {% include "rightnav.html.j2" %}
         {% endwith %}
         {% endwith %}
       </div>

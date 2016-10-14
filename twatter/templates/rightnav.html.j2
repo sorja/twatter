@@ -19,4 +19,13 @@
     <td>{{followers_length or 0}}</td>
   </tr>
 </table>
+
+{% if user is defined and user.id != current_user.getid() %}
+  {% if current_user.is_following %}
+    <a href="/unfollow/{{user.id}}" class="button is-danger is-outlined">Unfollow</a>
+  {% else %}
+    <a href="/follow/{{user.id}}" class="button is-danger">Follow</a>
+  {% endif %}
+{% endif %}
+
 {% endblock %}

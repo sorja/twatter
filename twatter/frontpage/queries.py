@@ -8,6 +8,7 @@ class Following(query.SQLQuery):
             SELECT whom_id
             FROM follower
             WHERE follower.who_id=%s
+            AND deleted = false
     '''
 
     def __init__(self, userid):
@@ -20,6 +21,7 @@ class Followers(query.SQLQuery):
             SELECT who_id
             FROM follower
             WHERE follower.whom_id=%s
+            AND deleted = false
     '''
 
     def __init__(self, userid):
@@ -34,20 +36,22 @@ class FollowedTwaats(query.SQLQuery):
             INNER JOIN users u ON t.user_id = u.id
             WHERE t.user_id IN
                 (SELECT whom_id FROM follower WHERE who_id = %s)
-            and t.parent_id is null;
+            and t.parent_id is null
+            LIMIT 10
     '''
 
     def __init__(self, userid):
         self.params = [userid]
 
-class MyTwaats(query.SQLQuery):
-    name = 'my_twaats'
+class Twaat(query.SQLQuery):
+    name = 'twaat'
+    result_action = 'fetchone'
     sql  = '''
-            SELECT *, u.email, u.full_name, u.timestamp, u.avatar, u.description
+            SELECT t.*, u.email, u.full_name, u.timestamp, u.avatar, u.description
             FROM twaat t
             INNER JOIN users u on t.user_id = u.id
             WHERE t.user_id=%s
-            LIMIT 2
+            LIMIT 1
     '''
 
     def __init__(self, userid):

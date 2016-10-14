@@ -93,3 +93,4 @@ uwsgi.ini
 static/bower_components/
 config.py
 settings_locals.py
+.vscode/

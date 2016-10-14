@@ -31,9 +31,15 @@ app.UPLOAD_FOLDER = config.UPLOAD_FOLDER
 import authentication.views
 import frontpage.views
 import profile.views
+import twaat.views
 
 @app.route('/')
 def index():
+    # autologin
+    if app.debug:
+        from twatter.twatter.models import models
+        import datetime
+        login_user(models.User(30, '123', '123', '123', datetime.datetime(2016, 9, 18, 16, 10, 6, 227456), None, None))
     if(current_user.is_authenticated):
         return redirect(url_for('frontpage'))
     return render_template('index.html')
@@ -53,7 +59,7 @@ def index():
 #     db_query = "select *, twaat.id as twaat_id from twaat join follower on twaat.user_id = follower.whom_id inner join users on users.id = follower.whom_id where follower.who_id = %s";
 #     following_count = len(get_fields_from_table_with_id('*', 'follower', 'who_id', current_user.id))
 #     follower_count = len(get_fields_from_table_with_id('*', 'follower', 'whom_id', current_user.id))
-#     return render_template('profile.html.jinja2',
+#     return render_template('profile.html.j2',
 #                             twaats=twaats, user=user,
 #                             following_count = following_count,
 #                             follower_count = follower_count)
@@ -101,20 +107,6 @@ def post_twaat(id=None):
     insert_new_twaat(current_user.id, text, parent_id)
     return redirect(url_for('index'))
 
-@app.route('/favorite_twaat/<id>', methods=['POST'])
-@login_required
-def favorite_twaat(id=None):
-    favorited_twaats = get_favorited_twaats_for_user(current_user.id)
-    if any(x['twaat_id'] == int(id) for x in favorited_twaats):
-        flash('Incorrect email or password', 'errors')
-        return 'nok'
-    #If this was not already favorited by user add it and incerement
-    insert_new_favorite_twaat_for_id(id, current_user.id)
-    update_custom_query('''
-    UPDATE twaat SET favorited_count = favorited_count + 1 where id = %s
-    ''', (id))
-    return 'ok'
-
 @app.route('/search_results/<type>/<query>', methods=['GET'])
 @login_required
 def search_results(query=None, type=None):
@@ -126,7 +118,7 @@ def search_results(query=None, type=None):
         return redirect(url_for('index'))
     
     search_results = get_search_results(type, query);
-    return render_template('search_results.html.jinja2', search_results=search_results)
+    return render_template('search_results.html.j2', search_results=search_results)
 
 @app.route('/search', methods=['POST'])
 @login_required

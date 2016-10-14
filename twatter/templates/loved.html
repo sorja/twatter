@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block body %}
+
+  <div class="columns">
+    <!-- profile info -->
+    <div class="column is-3">
+      {% with user = current_user %}
+      {% with active_page = "loved" %}
+        {% include "leftnav.html.j2" %}
+      {% endwith %}
+      {% endwith %}
+    </div>
+    <!-- profile twaats -->
+    <div class="column is-6">
+      <h2 class="title">Favorited TWAATs</h2>
+      <hr>
+      <div class="twaats">
+        {% for twaat in loved_twaats %}
+          {% with deletable = True %}
+            {% include "twaat.html.j2"%}
+          {% endwith %}
+        {% endfor %}
+      </div>
+    </div>
+    <!-- profile secondary info -->
+    <div class="column is-3">
+        <!-- fix this -->
+        {% with followers_length=18 %}
+        {% with following_length=101 %}
+          {% include "rightnav.html.j2" %}
+        {% endwith %}
+        {% endwith %}    
+      </div>
+  </div>
+{% endblock %}
