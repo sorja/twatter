@@ -37,4 +37,29 @@ document.getElementById("change_avatar").addEventListener("click", changeAvatar)
 // }
 
 document.getElementsByClassName("modal-background")[0].addEventListener("click", closeModal);
-document.getElementsByClassName("modal-close")[0].addEventListener("click", closeModal);
+if(document.getElementsByClassName("modal-close")[0]){
+  document.getElementsByClassName("modal-close")[0].addEventListener("click", closeModal);
+}
+
+if(document.getElementsByClassName("modal-close")[0]){
+  document.getElementsByClassName("modal-close")[0].addEventListener("click", closeModal);
+}
+
+/*
+  NO MORE JAVASCRIPT LIBRARIES MEANS NO MORE JAVASCRIPT LIBRARIES INCLUDING JQUERY!
+ */
+var selector = '.notification > .delete';
+var elements = document.querySelectorAll(selector);
+
+Array.prototype.forEach.call(elements, function(el, i){
+  el.addEventListener("click", function(e){
+    var elParent = el.parentNode;
+    var elGrandParent = elParent.parentNode;
+    elParent.remove();
+    //If container empty, rmeove it.
+    //We must go deeper.
+    if(!document.querySelectorAll('.section .container .column')[0].length){
+      document.querySelectorAll('.section')[0].remove()
+    }
+  });
+});

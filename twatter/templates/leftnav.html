@@ -2,7 +2,7 @@
 {% set navigation_bar = [
     ('/frontpage', 'frontpage', 'Feed'),
     ('/profile', 'profile', 'Me'),
-    ('/loved', 'loved', '<span class="fa fa-heart"></span>')
+    ('/loved', 'loved', 'Loved')
 ] -%}
 <aside class="menu">
   <!-- card -->
@@ -51,7 +51,12 @@
   <ul class="menu-list">
   {% for href, id, caption in navigation_bar %}
     <li>
-      <a{% if id == active_page %} class="is-active"{% endif %} href="{{ href|e }}">{{ caption }}</a>
+      <a{% if id == active_page %} class="is-active"{% endif %} href="{{ href|e }}">
+        {{caption}} 
+        {%if id == 'loved' %}
+        <span class="icon is-small"><i class="fa fa-heart"></i></span>
+        {%endif%}
+        </a>
     </li>
     {% endfor %}
   </ul>
@@ -59,7 +64,7 @@
     Settings
   </p>
   <ul class="menu-list">
-    <li class="is-disabled"><a href="/settings">Settings</a></li>
+    <li class=""><a href="/settings">Settings</a></li>
     <li class="is-disabled"><a href="#">Privacy</a></li>
   </ul>
   <!-- /menu -->

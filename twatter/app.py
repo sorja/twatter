@@ -32,17 +32,41 @@ import authentication.views
 import frontpage.views
 import profile.views
 import twaat.views
+import views.settings
+
+from twatter.twatter.queries import general as general_queries
+from twatter.twatter.utils import db, query
+
 
 @app.route('/')
 def index():
     # autologin
-    if app.debug:
-        from twatter.twatter.models import models
-        import datetime
-        login_user(models.User(30, '123', '123', '123', datetime.datetime(2016, 9, 18, 16, 10, 6, 227456), None, None))
+    # if app.debug:
+    #     from twatter.twatter.models import models
+    #     import datetime
+    #     login_user(models.User(30, '123', '123', '123', datetime.datetime(2016, 9, 18, 16, 10, 6, 227456), None, None))
     if(current_user.is_authenticated):
         return redirect(url_for('frontpage'))
-    return render_template('index.html')
+    else:
+        ctx = {}
+        info_twaats = db.fetch(
+            general_queries.InfoTwaats()
+        )
+        info_followers = db.fetch(
+            general_queries.InfoFollowers()
+        )
+
+        info_loves = db.fetch(
+            general_queries.InfoLoves()
+        )
+        
+        ctx.update({
+            'info_twaats': len(info_twaats['info_twaats']),
+            'info_followers': len(info_followers['info_followers']),
+            'info_loves': len(info_loves['info_loves'])
+        })
+        print ctx
+        return render_template('index.html', **ctx)
 
 # @app.route('/profile/<id>')
 # @app.route('/profile')
@@ -59,7 +83,7 @@ def index():
 #     db_query = "select *, twaat.id as twaat_id from twaat join follower on twaat.user_id = follower.whom_id inner join users on users.id = follower.whom_id where follower.who_id = %s";
 #     following_count = len(get_fields_from_table_with_id('*', 'follower', 'who_id', current_user.id))
 #     follower_count = len(get_fields_from_table_with_id('*', 'follower', 'whom_id', current_user.id))
-#     return render_template('profile.html.j2',
+#     return render_template('profile.html',
 #                             twaats=twaats, user=user,
 #                             following_count = following_count,
 #                             follower_count = follower_count)
@@ -118,7 +142,7 @@ def index():
 #         return redirect(url_for('index'))
     
 #     search_results = get_search_results(type, query);
-#     return render_template('search_results.html.j2', search_results=search_results)
+#     return render_template('search_results.html', search_results=search_results)
 
 # @app.route('/search', methods=['POST'])
 # @login_required
@@ -132,7 +156,7 @@ def index():
 def upload_avatar():
     def allowed_file(filename):
         return '.' in filename and \
-           filename.rsplit('.', 1)[1] in config.app['allowed_extenstions']
+           filename.rsplit('.', 1)[1] in config.ALLOWED_EXTENSIONS
     if 'file' not in request.files:
         flash('No file found', errors)
         redirect(request.url)
@@ -143,11 +167,11 @@ def upload_avatar():
         return redirect(request.url)
     
     if file and allowed_file(file.filename):
-        path = app.config['UPLOAD_FOLDER']+'/avatars'
+        path = '/'.join([config.PROJ_DIR, config.PROJ_NAME, config.UPLOAD_FOLDER])
         filename = '{}_{}.{}'.format(int(time.time()), current_user.id, file.filename.split('.')[-1])
         filename = secure_filename(filename)
         file.save(os.path.join(path, filename))
     # also update for user!
-    update_user_avatar(current_user.id, filename)
+    # update_user_avatar(current_user.id, filename)
     return redirect(url_for('profile'))
 

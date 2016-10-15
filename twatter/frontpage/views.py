@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
-from flask import render_template, request, redirect, url_for
+from flask import redirect, render_template, request, session, url_for
 from flask_login import current_user, login_required
-
 from twatter.twatter.app import app
-
-from twatter.twatter.models import models
-from twatter.twatter.utils import db, query
-
 from twatter.twatter.frontpage import queries as fp_queries
+from twatter.twatter.models import models
+from twatter.twatter.twaat import queries as twaat_queries
+from twatter.twatter.utils import db
+
 
 @app.route('/frontpage', methods=['GET'])
 @login_required
@@ -29,6 +28,17 @@ def frontpage():
         fp_queries.Twaat(current_user.id)
     )
     ctx.update(twaat)
+    favorited_twaats = db.fetch(
+        twaat_queries.LovedTwaats(current_user.id)
+    )
+    ctx.update(favorited_twaats)
+    #check if already loved
+    session['loved'] = []
+    for loved in ctx['loved_twaats']:
+        for followed in ctx['followed_twaats']:
+            if loved['id'] == followed['id']:
+                session['loved'].append(followed['id'])
+    print session['loved']
     return render_template('frontpage.html', **ctx)
 
 @app.route('/post_twaat', methods=['POST'])
@@ -62,7 +72,7 @@ def search_results(query=None, type=None):
     )
     ctx.update(search_results) 
     print ctx
-    return render_template('search_results.html.j2', **ctx)
+    return render_template('search_results.html', **ctx)
 
 @app.route('/search', methods=['POST'])
 @login_required

@@ -1,10 +1,11 @@
 {% extends "layout.html" %}
 {% block body %}
+
   <div class="columns">
     <div class="column is-3">
       {% with user = current_user %}
       {% with active_page = "frontpage" %}
-        {% include "leftnav.html.j2" %}
+        {% include "leftnav.html" %}
       {% endwith %}
       {% endwith %}
     </div>
@@ -27,7 +28,7 @@
       <h5 class="title">My last TWAATs </h5>
       <div class="columns">
       <div class="column">
-      {% include "twaat.html.j2" %}
+      {% include "twaat.html" %}
       </div>
       </div>
       <span class="is-pulled-right"><a href="/profile">...more</a></span>
@@ -35,7 +36,7 @@
       <!-- Tweets -->
       <h5 class="title">Following</h5>
       {% for twaat in followed_twaats|reverse %}
-      {% include "twaat.html.j2" %}
+      {% include "twaat.html" %}
       {% endfor %}
     </div>
 
@@ -43,7 +44,7 @@
       <div class="content">
         {% with followers_length=followers|length %}
         {% with following_length=following|length %}
-          {% include "rightnav.html.j2" %}
+          {% include "rightnav.html" %}
         {% endwith %}
         {% endwith %}
       </div>

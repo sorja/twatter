@@ -27,17 +27,30 @@
         </div>
         <!-- bottom: reply, retwat, like -->
         <nav class="level">
+        {% if twaat['user_id'] != current_user.getid() %}
           <div class="level-left">
-            <a class="level-item">
-              <span class="icon is-small"><i class="fa fa-reply"></i></span>
-            </a>
-            <a class="level-item">
+            <a href="{{url_for('retwaat', id=twaat['id'])}}" class="level-item">
               <span class="icon is-small"><i class="fa fa-retweet"></i></span>
             </a>
+            <a class="level-item">
+                <label class="collapse" for="{{twaat['id']}}}"><span class="icon is-small"><i class="fa fa-reply"></i></span></label>
+                <input id="{{twaat['id']}}}" type="checkbox"> 
+                <div>
+          <p class="control has-addons">
+            <input id="reply_input" type="text" maxlength="30" placeholder="Your thoughts?" />
+            <button type="submit" class="button small is-success">
+              Reply
+            </button>
+          </p>
+                </div>
+            </a>
+          {% if not twaat['id'] in session['loved'] %}
             <a href="{{url_for('love', id=twaat['id'])}}" class="level-item">
               <span class="icon is-small"><i class="fa fa-heart"></i></span>
             </a>
+          {% endif %}
           </div>
+        {% endif %}
           <div class="level-right">
             {% if twaat.favorited_count > 0 %}
             <!-- LOVE AMOUNT -->

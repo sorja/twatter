@@ -5,7 +5,7 @@
     <!-- profile info -->
     <div class="column is-3">
       {% with active_page = "profile" %}
-        {% include "leftnav.html.j2" %}
+        {% include "leftnav.html" %}
       {% endwith %}
     </div>
 
@@ -16,7 +16,7 @@
       <hr>
       <div class="twaats">
         {% for twaat in my_twaats|reverse %}
-          {% include "twaat.html.j2"%}
+          {% include "twaat.html"%}
         {% endfor %}
       </div>
     </div>
@@ -25,7 +25,7 @@
         <!-- fix this -->
         {% with followers_length=18 %}
         {% with following_length=101 %}
-          {% include "rightnav.html.j2" %}
+          {% include "rightnav.html" %}
         {% endwith %}
         {% endwith %}    
       </div>

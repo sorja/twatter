@@ -2,10 +2,33 @@
 
 from twatter.twatter.utils import query
 
+class NewTwaat(query.SQLQuery):
+    name = 'new_twaat'
+    result_action = 'fetchone'
+    sql  = '''
+            INSERT INTO twaat (user_id, text, parent_id) VALUES (%s, %s, %s) RETURNING *
+    '''
+
+    def __init__(self, user_id, text, parent_id):
+        self.params = (user_id, text, parent_id)
+
+class Twaat(query.SQLQuery):
+    name = 'twaat'
+    result_action = 'fetchone'
+    sql  = '''
+            SELECT t.*, u.email, u.full_name, u.timestamp, u.avatar, u.description, u.id as user_id
+            from twaat t 
+            INNER JOIN users u on t.user_id = u.id
+            WHERE t.id=%s
+    '''
+
+    def __init__(self, twaatid):
+        self.params = [twaatid]
+
 class LovedTwaats(query.SQLQuery):
     name = 'loved_twaats'
     sql  = '''
-            SELECT t.*, u.email, u.full_name, u.timestamp, u.avatar, u.description
+            SELECT t.*, u.email, u.full_name, u.timestamp, u.avatar, u.description, u.id as user_id
             FROM favorited_twaats ft
             INNER JOIN twaat t on ft.twaat_id = t.id 
             INNER JOIN users u on ft.who_id = u.id

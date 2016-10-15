@@ -6,7 +6,7 @@
     <div class="column is-3">
       {% with user = current_user %}
       {% with active_page = "loved" %}
-        {% include "leftnav.html.j2" %}
+        {% include "leftnav.html" %}
       {% endwith %}
       {% endwith %}
     </div>
@@ -17,7 +17,7 @@
       <div class="twaats">
         {% for twaat in loved_twaats %}
           {% with deletable = True %}
-            {% include "twaat.html.j2"%}
+            {% include "twaat.html"%}
           {% endwith %}
         {% endfor %}
       </div>
@@ -27,7 +27,7 @@
         <!-- fix this -->
         {% with followers_length=18 %}
         {% with following_length=101 %}
-          {% include "rightnav.html.j2" %}
+          {% include "rightnav.html" %}
         {% endwith %}
         {% endwith %}    
       </div>

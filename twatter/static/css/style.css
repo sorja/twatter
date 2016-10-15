@@ -47,3 +47,19 @@ h1 {
   color: #9b4dca;
   display: initial;
 }
+.collapse{
+}
+.collapse + input{
+  display: none; /* hide the checkboxes */
+}
+.collapse + input + div{
+  display:none;
+}
+.collapse + input:checked + div{
+  display:block;
+  float:right;
+  margin-left: 30px;
+}
+
+#reply_input {
+}

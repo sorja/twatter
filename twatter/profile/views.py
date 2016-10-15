@@ -32,7 +32,7 @@ def profile(id=None):
     ctx.update(following)
     current_user.is_following = following['following'] > 0
     
-    return render_template('profile.html.j2', **ctx)
+    return render_template('profile.html', **ctx)
 
 @app.route('/unfollow/<id>', methods=['GET'])
 @login_required

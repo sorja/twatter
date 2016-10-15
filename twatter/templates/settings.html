@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+{% block body %}
+{% set fields = [ 
+	('full_name', 'Full Name', 'text', 'Foo Bar'),
+	('email', 'Email	address', 'email', 'foo@bar.com'), 
+	('password', 'Password', 'password', '*****'), 
+	('description', 'Description', 'textarea','Description'), 
+	('current_password', 'Current password', 'password', '*****') 
+] -%}
+
+<div class="columns">
+	<div class="column is-3">
+		{% with user = current_user %} {% with active_page = "frontpage" %} {% include "leftnav.html" %} {% endwith %} {% endwith
+		%}
+	</div>
+
+
+	<div class="column is-6">
+		<section class="section">
+			<div class="container">
+				<h5 class='title'>Settings </h5>
+				<h5 class='subtitle'>Want to change something?</h5>
+				<div class="notification">
+					Only filled areas are updated.
+				</div>
+				<div class="columns">
+					<div class="column">
+						<form method="POST" action="/settings">
+
+							{% for field, name, type, placeholder in fields %}
+
+							<div class="control is-horizontal">
+								<div class="control-label">
+									<label class="label">{{name}}</label>
+								</div>
+								<div class="control is-grouped">
+
+									{% if field == 'password' %}
+									<p class="control is-expanded">
+										<input class="input" type={{type}} placeholder={{placeholder}} name={{field+ "2"}}>
+									</p>
+									{% endif %}
+
+									<p class="control is-expanded">
+										{% if type == 'textarea' %}
+										<textarea name={{field}} class="textarea" placeholder={{placeholder}}></textarea> {% else %}
+										<input class="input" type={{type}} placeholder={{placeholder}} name={{field}}> {% endif %}
+									</p>
+								</div>
+							</div>
+							{% endfor %}
+
+							<p class="control">
+								<input type="submit" class="button is-primary" />
+								<input type="reset" class="button is-link" value="Cancel">
+							</p>
+
+						</form>
+
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+
+	<div class="column is-3">
+		<div class="content">
+			{% with followers_length=followers|length %} {% with following_length=following|length %} {% include "rightnav.html" %} {%
+			endwith %} {% endwith %}
+		</div>
+	</div>
+
+</div>
+{% endblock %}
