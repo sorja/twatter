@@ -18,7 +18,7 @@ class User(UserMixin):
         return int(self.id)
 
     def __repr__(self):
-        return "{}\n{}\n{}\n{}\n{}\n}".format(self.id, self.email, self.full_name, self.password, self.created_at)
+        return "{}\n{}\n{}\n{}\n{}\n".format(self.id, self.email, self.full_name, self.password, self.created_at)
 
 class Twaat():
     __tablename__ = 'twaat'
