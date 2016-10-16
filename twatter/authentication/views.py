@@ -33,7 +33,16 @@ def login():
     result = db.fetch(
         auth_queries.Login(email, password)
     )
-    login_user(models.User(*result['login']))
+    user = result['login']
+    login_user(models.User(
+        user['id'],
+        user['full_name'],
+        user['email'],
+        user['password'],
+        user['timestamp'],
+        user['avatar'],
+        user['description']
+    ))
     return redirect(url_for('index'))
 
 @application.route('/logout')
@@ -52,4 +61,14 @@ def load_user(userid):
     result = db.fetch (
         auth_queries.VerifyUser((userid))
     )
-    return models.User(*result['verify_user'])
+    user = result['verify_user']
+
+    return models.User(
+        user['id'],
+        user['full_name'],
+        user['email'],
+        user['password'],
+        user['timestamp'],
+        user['avatar'],
+        user['description']
+    )
