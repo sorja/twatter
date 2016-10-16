@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from flask import flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
-from twatter.twatter.app import app
+from twatter.twatter.app import app as application
 
-@app.route('/settings', methods=['GET', 'POST'])
+@application.route('/settings', methods=['GET', 'POST'])
 @login_required
 def settings():
     if request.method == 'POST':

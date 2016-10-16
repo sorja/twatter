@@ -1,1 +1,1 @@
-from twatter.twatter.app import *
+from twatter.twatter.app import app

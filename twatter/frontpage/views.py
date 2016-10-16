@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 from flask import redirect, render_template, request, session, url_for
 from flask_login import current_user, login_required
-from twatter.twatter.app import app
+from twatter.twatter.app import app as application
 from twatter.twatter.frontpage import queries as fp_queries
 from twatter.twatter.models import models
 from twatter.twatter.twaat import queries as twaat_queries
 from twatter.twatter.utils import db
 
 
-@app.route('/frontpage', methods=['GET'])
+@application.route('/frontpage', methods=['GET'])
 @login_required
 def frontpage():
     ctx = {}
@@ -41,8 +41,8 @@ def frontpage():
     print session['loved']
     return render_template('frontpage.html', **ctx)
 
-@app.route('/post_twaat', methods=['POST'])
-@app.route('/post_twaat/<id>', methods=['POST'])
+@application.route('/post_twaat', methods=['POST'])
+@application.route('/post_twaat/<id>', methods=['POST'])
 @login_required
 def post_twaat(id=None):
     parent_id = id
@@ -57,7 +57,7 @@ def post_twaat(id=None):
     ctx.update(insert_twaat)
     return redirect(url_for('index', **ctx))
 
-@app.route('/search_results/<type>/<query>', methods=['GET'])
+@application.route('/search_results/<type>/<query>', methods=['GET'])
 @login_required
 def search_results(query=None, type=None):
     if query is None or type is None:
@@ -74,7 +74,7 @@ def search_results(query=None, type=None):
     print ctx
     return render_template('search_results.html', **ctx)
 
-@app.route('/search', methods=['POST'])
+@application.route('/search', methods=['POST'])
 @login_required
 def search():
     query = request.form['query']

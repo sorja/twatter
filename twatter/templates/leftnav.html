@@ -8,7 +8,7 @@
   <!-- card -->
   <div class="card">
     <div class="card-image">
-      <figure class="image is-4by3" {% if current_user.id == user.id %}id="change_avatar" title="Change avatar"{% endif %}>
+      <figure class="image is-1by1" {% if current_user.id == user.id %}id="change_avatar" title="Change avatar"{% endif %}>
         {% if user['avatar'] %}
           <img class="" src="{{url_for('static', filename='uploads/avatars/'+user['avatar'])}}" alt="avatar" />
         {% else %}

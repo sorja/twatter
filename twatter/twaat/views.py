@@ -2,14 +2,14 @@
 from flask import render_template, request, redirect, url_for, flash
 from flask_login import current_user, login_required
 
-from twatter.twatter.app import app
+from twatter.twatter.app import app as application
 
 from twatter.twatter.models import models
 from twatter.twatter.utils import db, query, helpers
 
 from twatter.twatter.twaat import queries as twaat_queries
 
-@app.route('/retwaat/<id>', methods=['GET'])
+@application.route('/retwaat/<id>', methods=['GET'])
 @login_required
 def retwaat(id=None):
     if not id:
@@ -30,7 +30,7 @@ def retwaat(id=None):
     flash('TWAAT was reTWAATed!', 'is-info')
     return redirect(helpers.redirect_url())
 
-@app.route('/loved', methods=['GET'])
+@application.route('/loved', methods=['GET'])
 @login_required
 def loved():
     ctx = {}
@@ -40,7 +40,7 @@ def loved():
     ctx.update(favorited_twaats)
     return render_template('loved.html', **ctx)
 
-@app.route('/love/<id>', methods=['GET'])
+@application.route('/love/<id>', methods=['GET'])
 @login_required
 def love(id=None):
     if not id:
@@ -66,7 +66,7 @@ def love(id=None):
     print ctx
     return redirect(helpers.redirect_url())
 
-@app.route('/unlove/<id>', methods=['GET'])
+@application.route('/unlove/<id>', methods=['GET'])
 @login_required
 def unlove(id=None):
     if not id:

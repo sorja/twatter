@@ -2,15 +2,15 @@
 from flask import render_template, redirect, url_for
 from flask_login import current_user, login_required 
 
-from twatter.twatter.app import app
+from twatter.twatter.app import app as application
 
 from twatter.twatter.models import models
 from twatter.twatter.utils import db, query
 
 from twatter.twatter.profile import queries as profile_queries
 
-@app.route('/profile/<id>', methods=['GET'])
-@app.route('/profile')
+@application.route('/profile/<id>', methods=['GET'])
+@application.route('/profile')
 @login_required
 def profile(id=None):
     if not id:
@@ -34,7 +34,7 @@ def profile(id=None):
     
     return render_template('profile.html', **ctx)
 
-@app.route('/unfollow/<id>', methods=['GET'])
+@application.route('/unfollow/<id>', methods=['GET'])
 @login_required
 def unfolow(id=None):
     if not id:
@@ -46,7 +46,7 @@ def unfolow(id=None):
     ctx.update(unfollow)
     return redirect(url_for('profile', id=id))
 
-@app.route('/follow/<id>', methods=['GET'])
+@application.route('/follow/<id>', methods=['GET'])
 @login_required
 def follow(id=None):
     if not id:

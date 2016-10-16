@@ -11,7 +11,7 @@ app.debug = config.DEBUG
 app.secret_key = config.SECRET_KEY
 app.MAX_CONTENT_LENGTH = config.MAX_CONTENT_LENGTH
 app.UPLOAD_FOLDER = config.UPLOAD_FOLDER
-
+application = app
 #  fix this
 # #import views
 # print ['.'.join((x, 'views')) for x in config.APPLICATIONS]
@@ -38,7 +38,7 @@ from twatter.twatter.queries import general as general_queries
 from twatter.twatter.utils import db, query
 
 
-@app.route('/')
+@application.route('/')
 def index():
     # autologin
     # if app.debug:
@@ -68,8 +68,8 @@ def index():
         print ctx
         return render_template('index.html', **ctx)
 
-# @app.route('/profile/<id>')
-# @app.route('/profile')
+# @application.route('/profile/<id>')
+# @application.route('/profile')
 # @login_required
 # def profile(id=None):
 #     if not id:
@@ -88,7 +88,7 @@ def index():
 #                             following_count = following_count,
 #                             follower_count = follower_count)
 
-# @app.route('/frontpage')
+# @application.route('/frontpage')
 # @login_required
 # def frontpage():
 #     # db_query = "select *, twaat.id as twaat_id from twaat join follower on twaat.user_id = follower.whom_id inner join users on users.id = follower.whom_id where follower.who_id = %s";
@@ -119,8 +119,8 @@ def index():
 #                             follower_count = 1)
 
 #helpers
-# @app.route('/post_twaat', methods=['POST'])
-# @app.route('/post_twaat/<id>', methods=['POST'])
+# @application.route('/post_twaat', methods=['POST'])
+# @application.route('/post_twaat/<id>', methods=['POST'])
 # @login_required
 # def post_twaat(id=None):
 #     parent_id = id
@@ -131,7 +131,7 @@ def index():
 #     insert_new_twaat(current_user.id, text, parent_id)
 #     return redirect(url_for('index'))
 
-# @app.route('/search_results/<type>/<query>', methods=['GET'])
+# @application.route('/search_results/<type>/<query>', methods=['GET'])
 # @login_required
 # def search_results(query=None, type=None):
 #     if query is None or type is None:
@@ -144,14 +144,14 @@ def index():
 #     search_results = get_search_results(type, query);
 #     return render_template('search_results.html', search_results=search_results)
 
-# @app.route('/search', methods=['POST'])
+# @application.route('/search', methods=['POST'])
 # @login_required
 # def search():
 #     query = request.form['query']
 #     type  = request.form['type']
 #     return redirect(url_for('search_results', query=query, type=type))
 
-@app.route('/upload_avatar', methods=['POST'])
+@application.route('/upload_avatar', methods=['POST'])
 @login_required
 def upload_avatar():
     def allowed_file(filename):
