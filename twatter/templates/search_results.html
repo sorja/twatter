@@ -22,7 +22,7 @@
           <!--card-->
             <div class="card">
               <div class="card-image">
-                <figure class="image is-4by3">
+                <figure class="image is-1by1">
                   {% if s.avatar %}
                     <img class="" src="{{url_for('static', filename='uploads/avatars/'+s.avatar)}}" alt="avatar" />
                   {% else %}
@@ -42,7 +42,7 @@
                     </figure>
                   </div>
                   <div class="media-content">
-                    <p class="title is-5">{{s.full_name|e}}</p>
+                    <p class="title is-5"><a href="/profile/{{s.id}}">{{s.full_name|e}}</a></p>
                     <p class="subtitle is-6"><a href="mailto:{{s.email}}">{{s.full_name|e}}</a></p>
                   </div>
                 </div>
