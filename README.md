@@ -1,6 +1,7 @@
 Twatter
 ------
-**See it live**: http://www.valit.us/   
+**Server is currently undergoing an update. Please run locally. Migrating from postgres 9.4 to 9.5 to suppoer some new features.**  
+~~See it live~~: http://www.valit.us/   
 **user** 123
 **password** 123
 
