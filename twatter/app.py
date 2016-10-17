@@ -173,5 +173,10 @@ def upload_avatar():
         file.save(os.path.join(path, filename))
     # also update for user!
     # update_user_avatar(current_user.id, filename)
+    update_avatar = db.fetch(
+        general_queries.UpdateAvatar(filename, current_user.id)
+    )
+    print filename
+    flash('Avatar updated', 'is-info')
     return redirect(url_for('profile'))
 

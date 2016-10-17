@@ -28,3 +28,13 @@ class InfoLoves(query.SQLQuery):
 
     def __init__(self):
         self.params = ()
+
+class UpdateAvatar(query.SQLQuery):
+    name = 'update_avatar'
+    result_action = 'fetchone'
+    sql = '''
+            UPDATE users SET avatar = %s WHERE id = %s RETURNING *
+    '''
+
+    def __init__(self, avatar, id):
+        self.params = (avatar, id)
