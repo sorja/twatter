@@ -35,7 +35,7 @@ class FollowedTwaats(query.SQLQuery):
             FROM twaat t
             INNER JOIN users u ON t.user_id = u.id
             WHERE t.user_id IN
-                (SELECT whom_id FROM follower WHERE who_id = %s)
+                (SELECT whom_id FROM follower WHERE who_id = %s and deleted = false)
             and t.parent_id is null
             LIMIT 10
     '''
