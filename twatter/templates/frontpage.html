@@ -44,7 +44,9 @@
       <div class="content">
         {% with followers_length=followers|length %}
         {% with following_length=following|length %}
+        {% with show_tags=True %}
           {% include "rightnav.html" %}
+        {% endwith %}
         {% endwith %}
         {% endwith %}
       </div>

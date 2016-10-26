@@ -47,6 +47,9 @@ def frontpage():
 def post_twaat(id=None):
     parent_id = id
     text = request.form['twaat_text']
+    assert application.debug == False
+
+
     if not text:
         redirect(url_for('index'))
     # img = request.form['twaat_img']
